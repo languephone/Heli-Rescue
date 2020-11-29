@@ -46,7 +46,7 @@ class HeliRescue:
 				self.chopper.update()
 				self._fire_bullet()
 				self._update_bullets()
-				self._hurl_asteroids()
+				#self._hurl_asteroids()
 				self._update_asteroids()
 				self._create_clouds()
 				self._update_clouds()
@@ -57,7 +57,7 @@ class HeliRescue:
 
 	def intro_game(self):
 		"""A temporary loop to create an intro scene."""
-		while self.chopper.y > self.settings.screen_height / 2:
+		while self.chopper.centery > self.settings.screen_height / 2:
 			self._check_events()
 			
 			if self.stats.game_active:
