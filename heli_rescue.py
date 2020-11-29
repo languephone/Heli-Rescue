@@ -7,6 +7,7 @@ from button import Button, Prompt
 from chopper_rotated import Chopper
 from bullet import Bullet
 from asteroid_alternates import Asteroid
+from background_elements import Cloud
 
 class HeliRescue:
 	"""Overall class to run the Heli Rescue game."""
@@ -28,6 +29,7 @@ class HeliRescue:
 		self.chopper = Chopper(self)
 		self.bullets = pygame.sprite.Group()
 		self.asteroids = pygame.sprite.Group()
+		self.clouds = pygame.sprite.Group()
 
 		# Tutorial Prompts.
 		self.press_spacebar = Prompt(self, "Press spacebar to fire bullets")
@@ -46,6 +48,8 @@ class HeliRescue:
 				self._update_bullets()
 				self._hurl_asteroids()
 				self._update_asteroids()
+				self._create_clouds()
+				self._update_clouds()
 				self._check_tutorial_prompts()
 			
 			self._update_screen()
@@ -211,9 +215,29 @@ class HeliRescue:
 		if pygame.sprite.spritecollideany(self.chopper, self.asteroids):
 			self._chopper_hit()
 
+	def _create_cloud(self):
+		"""Create a cloud and add it to the list of clouds."""
+		cloud = Cloud(self)
+		self.clouds.add(cloud)
+
+	def _create_clouds(self):
+		"""Add a cloud if there are fewer than 3 on screen"""
+		if len(self.clouds) < self.settings.cloud_max_count:
+			self._create_cloud()
+
+	def _update_clouds(self):
+		"""Move clouds to the left"""
+		self.clouds.update()
+
+		# Get rid of clouds that have moved beyond the screen.
+		for cloud in self.clouds.copy():
+			if cloud.rect.right <= 0:
+				self.clouds.remove(cloud)
+	
 	def _update_screen(self):
 		"""Update images on the screen, and flip to the new screen."""
 		self.screen.blit(self.bg_surface, (0,0))
+		self.clouds.draw(self.screen)
 		self.chopper.blitme()
 		for bullet in self.bullets.sprites():
 			bullet.draw_bullet()
