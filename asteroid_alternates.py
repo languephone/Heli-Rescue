@@ -11,7 +11,7 @@ class Asteroid(Sprite):
 		self.settings = hr_game.settings
 
 		# Load the asteroid image and set its rect attribute.
-		self.image_bank = ['images/asteroid_1.png', 'images/asteroid_2.png',
+		self.image_bank = ['images/asteroid_4.png', 'images/asteroid_2.png',
 						'images/asteroid_3.png']
 		self.random_index = randint(0, 2)
 		self.image = pygame.transform.scale(pygame.image.load(
