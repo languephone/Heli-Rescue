@@ -38,7 +38,6 @@ class Prompt:
 	def __init__(self, hr_game, msg):
 		"""Initializes prompt attributes."""
 		self.screen = hr_game.screen
-		self.screen_rect = self.screen.get_rect()
 		self.stats = hr_game.stats
 		self.settings = hr_game.settings
 		self.chopper = hr_game.chopper
@@ -64,4 +63,5 @@ class Prompt:
 
 	def update(self):
 		# Keep text immediately below chopper
-		self.prompt_image_rect.midtop = self.chopper.rect.midbottom
+		self.prompt_image_rect.midtop = (self.chopper.rect.centerx, 
+			self.chopper.rect.centery + self.chopper.rect.height/2 + 20)
