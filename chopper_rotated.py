@@ -30,6 +30,7 @@ class Chopper:
 
 		# Rotation Flags
 		self.tilt = 0
+		self.rotation_point = 238
 		
 		# Bullet Status Flags
 		self.firing_bullets = False
@@ -62,17 +63,14 @@ class Chopper:
 		print(self.centery, self.rect.centery, self.centerx, self.rect.centerx)
 
 	def _rotate_chopper(self):
-		if self.moving_right:
+		if self.moving_right and (self.tilt > 
+				self.settings.chopper_max_tilt * -1):
 			self.tilt -= 1
-			self.rotated_image = pygame.transform.rotozoom(self.image, 
-														self.tilt, 1)
-		elif self.moving_left:
+		elif self.moving_left and (self.tilt < 
+				self.settings.chopper_max_tilt):
 			self.tilt += 1
-			self.rotated_image = pygame.transform.rotozoom(self.image, 
+		self.rotated_image = pygame.transform.rotozoom(self.image, 
 														self.tilt, 1)
-		else:
-			self.rotated_image = self.image
-
 
 	def blitme(self):
 		"""Draw the chopper at its current location."""
