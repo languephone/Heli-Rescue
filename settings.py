@@ -11,7 +11,7 @@ class Settings:
 
 		# Chopper settings
 		self.chopper_speed = 4
-		self.chopper_incline = 10
+		self.chopper_max_incline = 10
 		self.chopper_limit = 3
 
 		# Bullet settings

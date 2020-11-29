@@ -42,10 +42,8 @@ class Chopper:
 		# Update the ship's x/y value, not the rect.
 		if self.moving_right and self.rect.left < (self.screen_rect.right - 50):
 			self.x += self.settings.chopper_speed
-			self.tilt = 1
 		if self.moving_left and self.rect.right > 50:
 			self.x -= self.settings.chopper_speed
-			self.tilt = -1
 		if self.moving_down and self.rect.top < (self.screen_rect.bottom - 50):
 			self.y += self.settings.chopper_speed
 		if self.moving_up and self.rect.bottom > 50:
@@ -62,11 +60,13 @@ class Chopper:
 
 	def _rotate_chopper(self):
 		if self.moving_right:
+			self.tilt -= 1
 			self.rotated_image = pygame.transform.rotozoom(self.image, 
-										self.settings.chopper_incline * -1, 1)
+														self.tilt, 1)
 		elif self.moving_left:
+			self.tilt += 1
 			self.rotated_image = pygame.transform.rotozoom(self.image, 
-										self.settings.chopper_incline, 1)
+														self.tilt, 1)
 		else:
 			self.rotated_image = self.image
 
