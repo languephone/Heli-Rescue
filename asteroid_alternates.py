@@ -37,5 +37,3 @@ class Asteroid(Sprite):
 		# Move to left
 		self.x -= self.settings.asteroid_speed
 		self.rect.x = self.x
-
-
