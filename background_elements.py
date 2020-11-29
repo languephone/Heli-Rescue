@@ -17,7 +17,7 @@ class Cloud(Sprite):
 		# Start each new cloud in a random vertical space on the right of the screen
 		self.rect.x = randint(self.settings.screen_width, self.settings.screen_width
 						 + self.settings.cloud_offset)
-		self.rect.y = randint(0, self.settings.screen_height - self.rect.height)
+		self.rect.y = randint(0, self.settings.cloud_maximum_y)
 
 		self.x = float(self.rect.x)
 
