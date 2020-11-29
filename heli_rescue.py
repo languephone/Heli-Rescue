@@ -14,7 +14,7 @@ class HeliRescue:
 
 	def __init__(self):
 		"""Initialize the game and create game resources."""
-		pygame.mixer.pre_init(frequency = 22050, size = 8, channels = 1, buffer = 256)
+		#pygame.mixer.pre_init(frequency = 22050, size = 8, channels = 1, buffer = 256)
 		pygame.init()
 		self.clock = pygame.time.Clock()
 		self.settings = Settings()
