@@ -27,3 +27,6 @@ class Settings:
 		self.asteroid_offset = 1500
 		self.asteroid_health = 5
 		self.asteroid_max_count = 4
+
+		# Cloud Settings
+		self.cloud_offset = 1500
