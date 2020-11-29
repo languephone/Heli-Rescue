@@ -65,4 +65,3 @@ class Prompt:
 	def update(self):
 		# Keep text immediately below chopper
 		self.prompt_image_rect.midtop = self.chopper.rect.midbottom
-		print("prompt update")

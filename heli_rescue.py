@@ -19,6 +19,9 @@ class HeliRescue:
 		self.settings = Settings()
 		self.screen = pygame.display.set_mode(
 			(self.settings.screen_width, self.settings.screen_height))
+		self.bg_surface = pygame.transform.scale(
+			pygame.image.load(self.settings.bg_image), 
+			(self.settings.screen_width, self.settings.screen_height)).convert()
 		pygame.display.set_caption("Heli Rescue")	
 		
 		self.stats = GameStats(self)
@@ -31,9 +34,6 @@ class HeliRescue:
 
 		# Make the 'play' button.
 		self.play_button = Button(self, "Play Heli Rescue")
-
-		# Start the helicoper sound effects
-
 
 	def run_game(self):
 		"""Start the main loop for the game."""
@@ -213,7 +213,7 @@ class HeliRescue:
 
 	def _update_screen(self):
 		"""Update images on the screen, and flip to the new screen."""
-		self.screen.fill(self.settings.bg_color)
+		self.screen.blit(self.bg_surface, (0,0))
 		self.chopper.blitme()
 		for bullet in self.bullets.sprites():
 			bullet.draw_bullet()
