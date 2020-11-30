@@ -63,10 +63,10 @@ class Chopper:
 	def _rotate_chopper(self):
 		if self.moving_right and (self.tilt > 
 				self.settings.chopper_max_tilt * -1):
-			self.tilt -= 1
+			self.tilt -= 0.5
 		elif self.moving_left and (self.tilt < 
 				self.settings.chopper_max_tilt):
-			self.tilt += 1
+			self.tilt += 0.5
 		self.rotated_image = pygame.transform.rotozoom(self.image, 
 														self.tilt, 1)
 
