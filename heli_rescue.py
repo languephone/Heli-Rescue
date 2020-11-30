@@ -32,7 +32,7 @@ class HeliRescue:
 		self.clouds = pygame.sprite.Group()
 
 		# Tutorial Prompts.
-		self.press_spacebar = Prompt(self, "Press spacebar to fire bullets")
+		self.press_spacebar = Prompt(self, "Hold spacebar to fire bullets")
 
 		# Make the 'play' button.
 		self.play_button = Button(self, "Play Heli Rescue")
