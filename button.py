@@ -63,6 +63,5 @@ class Prompt:
 
 	def update(self):
 		# Keep text immediately below chopper
-		self.prompt_image_rect.midtop = (
-			self.chopper.x + self.chopper.image.get_width() / 2, 
-			self.chopper.y + self.chopper.image.get_height())
+		self.prompt_image_rect.midtop = (self.chopper.rect.centerx, 
+			self.chopper.rect.centery + self.chopper.rect.height/2 + 20)
