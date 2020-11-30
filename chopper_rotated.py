@@ -60,8 +60,6 @@ class Chopper:
 		if self.firing_bullets:
 			self.bullet_firing_state += 1
 
-		print(self.centery, self.rect.centery, self.centerx, self.rect.centerx)
-
 	def _rotate_chopper(self):
 		if self.moving_right and (self.tilt > 
 				self.settings.chopper_max_tilt * -1):

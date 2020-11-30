@@ -46,7 +46,7 @@ class HeliRescue:
 				self.chopper.update()
 				self._fire_bullet()
 				self._update_bullets()
-				#self._hurl_asteroids()
+				self._hurl_asteroids()
 				self._update_asteroids()
 				self._create_clouds()
 				self._update_clouds()
