@@ -11,7 +11,8 @@ class Settings:
 
 		# Chopper settings
 		self.chopper_speed = 4
-		self.chopper_max_tilt = 8
+		self.chopper_max_tilt = 12
+		self.chopper_tilt_speed = 0.5
 		self.chopper_limit = 3
 
 		# Bullet settings
