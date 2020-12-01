@@ -40,6 +40,18 @@ class Chopper:
 		self.motor_sound = pygame.mixer.Sound('sounds/chopper.wav')
 
 	def update(self):
+		"""Update position and rotation of chopper."""
+		self._move_chopper()
+		self._rotate_chopper()
+		self.rect = self.rotated_image.get_rect()
+		self.rect.centerx = int(self.centerx)
+		self.rect.centery = int(self.centery)
+
+		# Update the bullet firing state
+		if self.firing_bullets:
+			self.bullet_firing_state += 1
+
+	def _move_chopper(self):
 		"""Update the ship's position based on the movement flag."""
 		# Update the ship's x/y value, not the rect.
 		if self.moving_right and self.rect.left < (self.screen_rect.right - 50):
@@ -50,15 +62,6 @@ class Chopper:
 			self.centery += self.settings.chopper_speed
 		if self.moving_up and self.rect.bottom > 50:
 			self.centery -= self.settings.chopper_speed
-
-		self._rotate_chopper()
-		self.rect = self.rotated_image.get_rect()
-		self.rect.centerx = int(self.centerx)
-		self.rect.centery = int(self.centery)
-
-		# Update the bullet firing state
-		if self.firing_bullets:
-			self.bullet_firing_state += 1
 
 	def _rotate_chopper(self):
 		if self.moving_right and (self.tilt > 
