@@ -28,6 +28,9 @@ class Asteroid(Sprite):
 		# Asteroid attributes
 		self.health = self.settings.asteroid_health
 
+		# Sound effects
+		self.explosion_sound = pygame.mixer.Sound('sounds/explosion2.ogg')
+
 	def update(self):
 		"""Move the asteroid to the left and rotate."""
 		# Set rotation
@@ -36,4 +39,4 @@ class Asteroid(Sprite):
 		
 		# Move to left
 		self.x -= self.settings.asteroid_speed
-		self.rect.x = self.x
+		self.rect.x = int(self.x)

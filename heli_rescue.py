@@ -175,7 +175,8 @@ class HeliRescue:
 	def _chopper_hit(self):
 		"""Respond to the chopper hitting an asteroid."""
 
-		# To fill in later with sound effect and crash image.
+		# Play sound effect and change image to explosion
+		self.chopper.crash_sound.play()		
 
 		# Get rid of any remaining asteroids and bullets.
 		self.asteroids.empty()
@@ -209,6 +210,7 @@ class HeliRescue:
 		# Get rid of asteroids with 0 health:
 		for asteroid in self.asteroids.copy():
 			if asteroid.health <= 0:
+				asteroid.explosion_sound.play()
 				self.asteroids.remove(asteroid)
 
 		# Look for asteroid-chopper collisions.

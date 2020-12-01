@@ -38,6 +38,7 @@ class Chopper:
 
 		# Sound effects
 		self.motor_sound = pygame.mixer.Sound('sounds/chopper.wav')
+		self.crash_sound = pygame.mixer.Sound('sounds/explosion1.ogg')
 
 	def update(self):
 		"""Update position and rotation of chopper."""
@@ -80,4 +81,4 @@ class Chopper:
 	def center_chopper(self):
 		"""Center the chopper on the screen."""
 		self.centery -= self.settings.chopper_speed / 2
-		self.rect.centery = float(self.centery)
+		self.rect.centery = int(self.centery)
