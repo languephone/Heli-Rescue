@@ -141,7 +141,7 @@ class HeliRescue:
 		self.stats.game_active = True
 
 		# Play chopper sound
-		self.chopper.motor_sound.play(-1)
+		self.chopper.motor_sound.play(-1).set_volume(0.5)
 
 	def _fire_bullet(self):
 		"""Create a new bullet and add it to the bullets group."""
