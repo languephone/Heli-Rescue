@@ -21,6 +21,9 @@ class Cloud(Sprite):
 
 		self.x = float(self.rect.x)
 
+		# Assign a speed between min and max
+		self.speed = randint(1, self.settings.cloud_max_speed)
+
 	def update(self):
 		"""Move the cloud to the left and rotate."""
 		# Set rotation
@@ -28,5 +31,5 @@ class Cloud(Sprite):
 		# self.rotated_image = pygame.transform.rotozoom(self.image, self.rotation, 1)
 		
 		# Move to left
-		self.x -= self.settings.cloud_speed
+		self.x -= self.speed
 		self.rect.x = self.x
