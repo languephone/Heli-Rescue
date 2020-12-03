@@ -32,5 +32,6 @@ class Settings:
 		# Cloud Settings
 		self.cloud_offset = 1500
 		self.cloud_speed = 1
+		self.cloud_max_speed = 3
 		self.cloud_max_count = 3
 		self.cloud_maximum_y = int(self.screen_height / 2)
