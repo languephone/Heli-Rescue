@@ -61,7 +61,7 @@ class HeliRescue:
 			self._check_events()
 			
 			if self.stats.game_active:
-				self.chopper.center_chopper()	
+				self.chopper.center_chopper()
 			self._update_screen()
 			self.clock.tick(120)
 
@@ -141,7 +141,7 @@ class HeliRescue:
 		self.stats.game_active = True
 
 		# Play chopper sound
-		self.chopper.motor_sound.play(-1).set_volume(0.5)
+		self.chopper.motor_sound.play(-1).set_volume(0.3)
 
 	def _fire_bullet(self):
 		"""Create a new bullet and add it to the bullets group."""
