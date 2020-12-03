@@ -9,10 +9,19 @@ class Chopper:
 		self.screen_rect = hr_game.screen.get_rect()
 		self.settings = hr_game.settings
 
-		# Load the ship image and get its rect.
-		self.image = pygame.transform.scale(pygame.image.load(
-				'images/chopper.png'), (200, 103)).convert_alpha()
-		self.rotated_image = pygame.transform.rotozoom(self.image, 0, 1)
+		# Load the chopper image and get its rect.
+		self.images = []
+		self.images.append(pygame.image.load('images/helicopter_1.png').convert_alpha())
+		self.images.append(pygame.image.load('images/helicopter_2.png').convert_alpha())
+		self.images.append(pygame.image.load('images/helicopter_3.png').convert_alpha())
+		self.images.append(pygame.image.load('images/helicopter_4.png').convert_alpha())
+		self.images.append(pygame.image.load('images/helicopter_5.png').convert_alpha())
+		self.images.append(pygame.image.load('images/helicopter_6.png').convert_alpha())
+		self.images.append(pygame.image.load('images/helicopter_7.png').convert_alpha())
+		self.images.append(pygame.image.load('images/helicopter_8.png').convert_alpha())
+		self.current_image = 0
+		self.image = self.images[self.current_image]
+		self.rotated_image = pygame.transform.rotozoom(self.image, 0, 3)
 		self.rect = self.rotated_image.get_rect()
 		
 		# Start each new chopper below the center of the screen.
@@ -44,6 +53,7 @@ class Chopper:
 		"""Update position and rotation of chopper."""
 		self._move_chopper()
 		self._rotate_chopper()
+		self._animate_chopper()
 		self.rect = self.rotated_image.get_rect()
 		self.rect.centerx = int(self.centerx)
 		self.rect.centery = int(self.centery)
@@ -77,7 +87,13 @@ class Chopper:
 			elif not self.moving_left and self.tilt > 0:
 				self.tilt -= self.settings.chopper_tilt_speed
 		self.rotated_image = pygame.transform.rotozoom(self.image, 
-														self.tilt, 1)
+														self.tilt, 3)
+
+	def _animate_chopper(self):
+		self.current_image += 0.25
+		if self.current_image >= len(self.images):
+			self.current_image = 0
+		self.image = self.images[int(self.current_image)]
 
 	def blitme(self):
 		"""Draw the chopper at its current location."""
