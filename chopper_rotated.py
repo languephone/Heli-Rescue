@@ -11,7 +11,7 @@ class Chopper:
 
 		# Load the chopper image and get its rect.
 		self.images = []
-		for i in range(7):
+		for i in range(8):
 			self.images.append(pygame.image.load(f'images/helicopter_{i+1}.png').convert_alpha())
 		self.current_image = 0
 		self.image = self.images[self.current_image]
@@ -46,8 +46,8 @@ class Chopper:
 	def update(self):
 		"""Update position and rotation of chopper."""
 		self._move_chopper()
-		self._rotate_chopper()
 		self._animate_chopper()
+		self._rotate_chopper()
 		self.rect = self.rotated_image.get_rect()
 		self.rect.centerx = int(self.centerx)
 		self.rect.centery = int(self.centery)
@@ -97,3 +97,5 @@ class Chopper:
 		"""Center the chopper on the screen."""
 		self.centery -= self.settings.chopper_speed / 2
 		self.rect.centery = int(self.centery)
+		self._animate_chopper()
+		self._rotate_chopper()
