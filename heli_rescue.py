@@ -104,7 +104,7 @@ class HeliRescue:
 			self.stats.spacebar_pressed = True
 		elif event.key == pygame.K_ESCAPE:
 			self.stats.game_active = False
-			self.chopper.motor_sound.set_volume(0.2)
+			self.chopper.motor_sound.fadeout(1000)
 			pygame.mouse.set_visible(True)
 		elif event.key == pygame.K_q:
 			pygame.quit()
@@ -141,7 +141,7 @@ class HeliRescue:
 		self.stats.game_active = True
 
 		# Play chopper sound
-		self.chopper.motor_sound.play(-1).set_volume(0.3)
+		self.chopper.motor_sound.play(-1).set_volume(0.2)
 
 	def _fire_bullet(self):
 		"""Create a new bullet and add it to the bullets group."""
