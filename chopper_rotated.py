@@ -12,7 +12,8 @@ class Chopper:
 		# Load the chopper image and get its rect.
 		self.images = []
 		for i in range(8):
-			self.images.append(pygame.image.load(f'images/helicopter_{i+1}.png').convert_alpha())
+			self.images.append(pygame.image.load(
+				f'images/helicopter_{i+1}.png').convert_alpha())
 		self.current_image = 0
 		self.image = self.images[self.current_image]
 		self.rotated_image = pygame.transform.rotozoom(self.image, 0, 3)
