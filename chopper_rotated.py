@@ -18,10 +18,11 @@ class Chopper:
 		self.image = self.images[self.current_image]
 		self.rotated_image = pygame.transform.rotozoom(self.image, 0, 3)
 		self.rect = self.rotated_image.get_rect()
+		self.hitbox = pygame.Rect(0, 0, 100, 63)
 		
 		# Start each new chopper below the center of the screen.
 		self.rect.centerx = self.screen_rect.centerx
-		self.rect.centery = self.screen_rect.bottom + 100
+		self.rect.y = self.screen_rect.bottom
 
 		# Store a decimal x & y value for the chopper's actual position
 		self.centerx, self.centery = float(self.rect.centerx), float(self.rect.centery)
@@ -52,6 +53,8 @@ class Chopper:
 		self.rect = self.rotated_image.get_rect()
 		self.rect.centerx = int(self.centerx)
 		self.rect.centery = int(self.centery)
+		self.hitbox.centerx = self.rect.centerx + 37
+		self.hitbox.centery = self.rect.centery + 10
 
 		# Update the bullet firing state
 		if self.firing_bullets:
@@ -93,6 +96,8 @@ class Chopper:
 	def blitme(self):
 		"""Draw the chopper at its current location."""
 		self.screen.blit(self.rotated_image, self.rect)
+		pygame.draw.rect(self.screen, 'Red', self.rect, 2)
+		pygame.draw.rect(self.screen, 'Green', self.hitbox, 2)
 
 	def center_chopper(self):
 		"""Center the chopper on the screen."""
