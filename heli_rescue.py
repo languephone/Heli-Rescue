@@ -3,6 +3,7 @@ from time import sleep
 import pygame
 from settings import Settings
 from game_stats import GameStats
+from scoreboard import Scoreboard
 from button import Button, Prompt
 from chopper_rotated import Chopper
 from bullet import Bullet
@@ -26,6 +27,7 @@ class HeliRescue:
 		pygame.display.set_caption("Heli Rescue")	
 		
 		self.stats = GameStats(self)
+		self.sb = Scoreboard(self)
 		self.chopper = Chopper(self)
 		self.bullets = pygame.sprite.Group()
 		self.asteroids = pygame.sprite.Group()
@@ -36,6 +38,7 @@ class HeliRescue:
 
 		# Make the 'play' button.
 		self.play_button = Button(self, "Play Heli Rescue")
+
 
 	def run_game(self):
 		"""Start the main loop for the game."""
@@ -212,6 +215,8 @@ class HeliRescue:
 		for asteroid in self.asteroids.copy():
 			if asteroid.health <= 0:
 				asteroid.explosion_sound.play()
+				self.stats.score += self.settings.asteroid_points
+				self.sb.prep_score()
 				self.asteroids.remove(asteroid)
 
 		# Look for asteroid-chopper collisions.
@@ -252,6 +257,9 @@ class HeliRescue:
 		# Draw prompt information.
 		if self.stats.spacebar_pressed == False:
 			self.press_spacebar.show_prompt()
+
+		# Draw the score information.
+		self.sb.show_score()
 		
 		# Draw the play button if the game is inactive.
 		if not self.stats.game_active:

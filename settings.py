@@ -35,3 +35,6 @@ class Settings:
 		self.cloud_max_speed = 3
 		self.cloud_max_count = 3
 		self.cloud_maximum_y = int(self.screen_height / 2)
+
+		# Scoring
+		self.asteroid_points = 10
