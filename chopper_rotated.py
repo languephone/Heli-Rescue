@@ -18,7 +18,7 @@ class Chopper:
 		self.image = self.images[self.current_image]
 		self.rotated_image = pygame.transform.rotozoom(self.image, 0, 3)
 		self.rect = self.rotated_image.get_rect()
-		self.hitbox = pygame.Rect(0, 0, 100, 63)
+		self.hitbox = pygame.Rect(0, 0, 96, 63)
 		
 		# Start each new chopper below the center of the screen.
 		self.rect.centerx = self.screen_rect.centerx
@@ -53,7 +53,7 @@ class Chopper:
 		self.rect = self.rotated_image.get_rect()
 		self.rect.centerx = int(self.centerx)
 		self.rect.centery = int(self.centery)
-		self.hitbox.centerx = self.rect.centerx + 37
+		self.hitbox.centerx = self.rect.centerx + 40
 		self.hitbox.centery = self.rect.centery + 10
 
 		# Update the bullet firing state
