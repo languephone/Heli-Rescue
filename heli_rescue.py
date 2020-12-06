@@ -215,8 +215,11 @@ class HeliRescue:
 				self.asteroids.remove(asteroid)
 
 		# Look for asteroid-chopper collisions.
-		if pygame.sprite.spritecollideany(self.chopper, self.asteroids):
+		if pygame.sprite.spritecollideany(self.chopper, self.asteroids, self._collide_hit_rect):
 			self._chopper_hit()
+
+	def _collide_hit_rect(self, one, two):
+		return one.hitbox.colliderect(two.rect)
 
 	def _create_cloud(self):
 		"""Create a cloud and add it to the list of clouds."""
