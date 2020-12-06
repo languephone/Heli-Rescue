@@ -14,7 +14,7 @@ class HeliRescue:
 
 	def __init__(self):
 		"""Initialize the game and create game resources."""
-		#pygame.mixer.pre_init(frequency = 22050, size = 8, channels = 1, buffer = 256)
+		pygame.mixer.pre_init(frequency = 22050, size = 8, channels = 1, buffer = 256)
 		pygame.init()
 		self.clock = pygame.time.Clock()
 		self.settings = Settings()
@@ -152,6 +152,9 @@ class HeliRescue:
 			new_bullet = Bullet(self)
 			self.bullets.add(new_bullet)
 			self.chopper.bullet_firing_state = 0
+			
+			# Play sound effect
+			self.chopper.gun_sound.play().set_volume(0.1)
 
 	def _update_bullets(self):
 		"""Update position of bullets and get rid of old bullets."""
