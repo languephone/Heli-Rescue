@@ -12,7 +12,7 @@ class Scoreboard:
 
 		# Font settings for scoring information.
 		self.text_color = (30, 30, 30)
-		self.font = pygame.freetype.SysFont(None, 32)
+		self.font = pygame.freetype.SysFont('Impact', 32)
 
 		# Prepare the initial score image.
 		self.prep_score()
@@ -22,7 +22,6 @@ class Scoreboard:
 		score_str = str(self.stats.score)
 		self.score_image = self.font.render(score_str,
 			self.text_color)
-		print(self.score_image)
 
 		# Display the score at the top right of the screen.
 		self.score_image[1][0] = (self.screen_rect.right - 
