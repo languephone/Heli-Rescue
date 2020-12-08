@@ -8,6 +8,7 @@ from chopper_rotated import Chopper
 from bullet import Bullet
 from asteroid_alternates import Asteroid
 from background_elements import Cloud
+from particle_effects import Shockwave 
 
 class HeliRescue:
 	"""Overall class to run the Heli Rescue game."""
@@ -25,11 +26,13 @@ class HeliRescue:
 			(self.settings.screen_width, self.settings.screen_height)).convert()
 		pygame.display.set_caption("Heli Rescue")	
 		
+		# Create game objects
 		self.stats = GameStats(self)
 		self.chopper = Chopper(self)
 		self.bullets = pygame.sprite.Group()
 		self.asteroids = pygame.sprite.Group()
 		self.clouds = pygame.sprite.Group()
+		self.shockwaves = pygame.sprite.Group()
 
 		# Tutorial Prompts.
 		self.press_spacebar = Prompt(self, "Hold spacebar to fire bullets")
@@ -48,6 +51,7 @@ class HeliRescue:
 				self._update_bullets()
 				self._hurl_asteroids()
 				self._update_asteroids()
+				self._update_shockwaves()
 				self._create_clouds()
 				self._update_clouds()
 				self._check_tutorial_prompts()
@@ -164,6 +168,15 @@ class HeliRescue:
 
 		self._check_bullet_asteroid_collisions()
 
+	def _update_shockwaves(self):
+		"""Update size and border of shockwaves and get rid of old waves."""
+		self.shockwaves.update()
+
+		# Get rid of bullets that have a border approaching zero"""
+		for wave in self.shockwaves.copy():
+			if wave.border_width <= 1.5:
+				self.shockwaves.remove(wave)
+
 	def _check_bullet_asteroid_collisions(self):
 		"""Respond to bullet-asteroid collisions."""
 		# Remove bullets that have collided with asteroids.
@@ -212,6 +225,9 @@ class HeliRescue:
 		for asteroid in self.asteroids.copy():
 			if asteroid.health <= 0:
 				asteroid.explosion_sound.play()
+				new_wave = Shockwave(self, asteroid.rect.centerx, 
+									asteroid.rect.centery, 'white')
+				self.shockwaves.add(new_wave)
 				self.asteroids.remove(asteroid)
 
 		# Look for asteroid-chopper collisions.
@@ -247,6 +263,8 @@ class HeliRescue:
 		self.chopper.blitme()
 		for bullet in self.bullets.sprites():
 			bullet.draw_bullet()
+		for wave in self.shockwaves.sprites():
+			wave.draw_wave()
 		self.asteroids.draw(self.screen)
 
 		# Draw prompt information.

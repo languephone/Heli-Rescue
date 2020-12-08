@@ -35,3 +35,7 @@ class Settings:
 		self.cloud_max_speed = 3
 		self.cloud_max_count = 3
 		self.cloud_maximum_y = int(self.screen_height / 2)
+
+		# Shockwave Settings
+		self.shockwave_radius = 20
+		self.shockwave_border_width = 8
