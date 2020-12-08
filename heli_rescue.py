@@ -226,7 +226,7 @@ class HeliRescue:
 			if asteroid.health <= 0:
 				asteroid.explosion_sound.play()
 				new_wave = Shockwave(self, asteroid.rect.centerx, 
-									asteroid.rect.centery, 'white')
+									asteroid.rect.centery, self.settings.shockwave_colour )
 				self.shockwaves.add(new_wave)
 				self.asteroids.remove(asteroid)
 

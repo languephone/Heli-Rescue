@@ -20,8 +20,8 @@ class Shockwave(Sprite):
 
 	def update(self):
 		"""Expand the radius of the circle whilst shrinking border width."""
-		self.radius += 6
-		self.border_width -= 0.1
+		self.radius += self.settings.shockwave_growth_speed
+		self.border_width -= self.settings.shockwave_border_decay_speed
 				
 	def draw_wave(self):
 		"""Draw the wave using its current size/border"""
