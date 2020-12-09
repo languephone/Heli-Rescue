@@ -23,6 +23,7 @@ class Chopper:
 		# Start each new chopper below the center of the screen.
 		self.rect.centerx = self.screen_rect.centerx
 		self.rect.y = self.screen_rect.bottom
+		self.hitbox.center = self.rect.center
 
 		# Store a decimal x & y value for the chopper's actual position
 		self.centerx, self.centery = float(self.rect.centerx), float(self.rect.centery)
@@ -104,5 +105,6 @@ class Chopper:
 		"""Center the chopper on the screen."""
 		self.centery -= self.settings.chopper_speed / 2
 		self.rect.centery = int(self.centery)
+		self.hitbox.center = self.rect.center
 		self._animate_chopper()
 		self._rotate_chopper()
