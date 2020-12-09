@@ -43,5 +43,4 @@ class Scoreboard:
 			chopper = Chopper(self.hr_game)
 			chopper.rect.x = 10 + chopper_number * (chopper.rect.width / 3)
 			chopper.rect.y = 10
-			print(chopper.rect)
 			self.choppers.add(chopper)

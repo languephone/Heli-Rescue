@@ -107,6 +107,7 @@ class Chopper(Sprite):
 		"""Center the chopper on the screen."""
 		self.centery -= self.settings.chopper_speed / 2
 		self.rect.centery = int(self.centery)
-		self.hitbox.center = self.rect.center
+		self.hitbox.centerx = self.rect.centerx + 40
+		self.hitbox.centery = self.rect.centery + 10
 		self._animate_chopper()
 		self._rotate_chopper()
