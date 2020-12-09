@@ -191,6 +191,10 @@ class HeliRescue:
 
 		# Pause.
 		sleep(1)
+
+		# Remove 1 chopper from the reserve
+		self.stats.choppers_left -= 1
+		self.sb.prep_choppers()
  
 	def _create_asteroid(self):
 		"""Create an asteroid and add it to the list of asteroids."""

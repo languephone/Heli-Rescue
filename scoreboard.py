@@ -1,10 +1,13 @@
 import pygame.freetype
+from pygame.sprite import Group
+from chopper_rotated import Chopper
 
 class Scoreboard:
 	"""A class to report scoring information."""
 
 	def __init__(self, hr_game):
 		"""Initialize scorekeeping attributes."""
+		self.hr_game = hr_game
 		self.screen = hr_game.screen
 		self.screen_rect = self.screen.get_rect()
 		self.settings = hr_game.settings
@@ -16,6 +19,7 @@ class Scoreboard:
 
 		# Prepare the initial score image.
 		self.prep_score()
+		self.prep_choppers()
 
 	def prep_score(self):
 		"""Turn the score into a rendered image."""
@@ -28,5 +32,15 @@ class Scoreboard:
 			self.score_image[1][2] - 20)
 
 	def show_score(self):
-		"""Draw score to the screen."""
+		"""Draw score and reserve choppers to the screen."""
 		self.screen.blit(self.score_image[0], self.score_image[1])
+		self.choppers.draw(self.screen)
+
+	def prep_choppers(self):
+		"""Show how many choppers are left."""
+		self.choppers = Group()
+		for chopper_number in range(self.stats.choppers_left):
+			chopper = Chopper(self.hr_game)
+			chopper.rect.x = 10 + chopper_number * (chopper.rect.width) / 2
+			chopper.rect.y = 10
+			self.choppers.add(chopper)
