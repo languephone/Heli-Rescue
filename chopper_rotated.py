@@ -44,6 +44,7 @@ class Chopper:
 		# Sound effects
 		self.motor_sound = pygame.mixer.Sound('sounds/chopper.wav')
 		self.crash_sound = pygame.mixer.Sound('sounds/explosion1.ogg')
+		self.gun_sound = pygame.mixer.Sound('sounds/shot.wav')
 
 	def update(self):
 		"""Update position and rotation of chopper."""
