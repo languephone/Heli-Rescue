@@ -5,11 +5,11 @@ from settings import Settings
 from game_stats import GameStats
 from scoreboard import Scoreboard
 from button import Button, Prompt
-from chopper_rotated import Chopper
+from chopper import Chopper
 from bullet import Bullet
 from asteroid_alternates import Asteroid
 from background_elements import Cloud
-from particle_effects import Shockwave, ParticleBreak
+from particle_effects import Shockwave, ParticleBreak, Smoke
 
 class HeliRescue:
 	"""Overall class to run the Heli Rescue game."""
@@ -36,6 +36,7 @@ class HeliRescue:
 		self.clouds = pygame.sprite.Group()
 		self.shockwaves = pygame.sprite.Group()
 		self.particles = pygame.sprite.Group()
+		self.smoke_puffs = pygame.sprite.Group()
 
 		# Tutorial Prompts.
 		self.press_spacebar = Prompt(self, "Hold spacebar to fire bullets")
@@ -57,6 +58,8 @@ class HeliRescue:
 				self._update_asteroids()
 				self._update_shockwaves()
 				self._update_particles()
+				self._generate_smoke(self.chopper)
+				self._update_smoke()
 				self._create_clouds()
 				self._update_clouds()
 				self._check_tutorial_prompts()
@@ -194,6 +197,15 @@ class HeliRescue:
 			if particle.radius <=0:
 				self.particles.remove(particle)
 
+	def _update_smoke(self):
+		"""Update size/position of particles and get rid of old particles."""
+		self.smoke_puffs.update()
+
+		# Get rid of particles that have moved offscreen."""
+		for puff in self.smoke_puffs.copy():
+			if puff.pos_x < -puff.radius:
+				self.smoke_puffs.remove(puff)
+
 	def _check_bullet_asteroid_collisions(self):
 		"""Respond to bullet-asteroid collisions."""
 		# Remove bullets that have collided with asteroids.
@@ -207,7 +219,8 @@ class HeliRescue:
 		"""Respond to the chopper hitting an asteroid."""
 
 		# Play sound effect and change image to explosion
-		self.chopper.crash_sound.play()		
+		self.chopper.crash_sound.play()	
+		self.chopper.emitting_smoke = True	
 
 		# Get rid of any remaining asteroids and bullets.
 		self.asteroids.empty()
@@ -270,6 +283,16 @@ class HeliRescue:
 					asteroid.rect.centery, self.settings.particle_colour)
 			self.particles.add(new_particle)
 
+	def _generate_smoke(self, chopper):
+		"""Create smoke particles on hitting asteroid."""
+		if (self.chopper.emitting_smoke == True and 
+				self.chopper.smoke_emitting_state > 
+				self.settings.smoke_emitting_threshold):
+			new_puff = Smoke(self, chopper.rect.centerx, chopper.rect.centery,
+							 colour='grey')
+			self.smoke_puffs.add(new_puff)
+			self.chopper.smoke_emitting_state = 0
+
 	def _collide_hit_rect(self, one, two):
 		return one.hitbox.colliderect(two.rect)
 
@@ -303,6 +326,8 @@ class HeliRescue:
 			wave.draw_wave()
 		for particle in self.particles.sprites():
 			particle.draw_particle()
+		for puff in self.smoke_puffs.sprites():
+			puff.draw_smoke()
 		self.asteroids.draw(self.screen)
 
 		# Draw prompt information.

@@ -49,5 +49,13 @@ class Settings:
 		self.particle_colour = (81, 69, 69)
 		self.particle_movement_speed = 3
 
+		# Smoke Settings
+		self.smoke_radius = 10
+		self.smoke_colour = (81, 69, 69)
+		self.smoke_growth_speed = 0.25
+		self.smoke_movement_speed = 5
+		self.smoke_max_radius = 50
+		self.smoke_emitting_threshold = 50
+
 		# Scoring
 		self.asteroid_points = 10

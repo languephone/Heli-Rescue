@@ -16,9 +16,6 @@ class Shockwave(Sprite):
 		self.pos_x = pos_x
 		self.pos_y = pos_y
 
-		# Define inputs needed to draw circle
-		self.pos = (self.pos_x, self.pos_y)
-
 	def update(self):
 		"""Expand the radius of the circle whilst shrinking border width."""
 		self.radius += self.settings.shockwave_growth_speed
@@ -26,7 +23,7 @@ class Shockwave(Sprite):
 				
 	def draw_wave(self):
 		"""Draw the wave using its current size/border"""
-		pygame.draw.circle(self.screen, self.colour, self.pos,
+		pygame.draw.circle(self.screen, self.colour, (self.pos_x, self.pos_y),
 					self.radius, int(self.border_width))
 
 class ParticleBreak(Sprite):
@@ -56,3 +53,26 @@ class ParticleBreak(Sprite):
 		"""draw the particle using its current size/location."""
 		pygame.draw.circle(self.screen, self.colour, (self.pos_x, self.pos_y),
 			self.radius)
+
+class Smoke(Sprite):
+	"""A classs to manage smoke effects on damage and victory."""
+
+	def __init__(self, hr_game, pos_x, pos_y, colour='white'):
+		"""Create a smoke bubble at a specified origin point."""
+		super().__init__()
+		self.screen = hr_game.screen
+		self.settings = hr_game.settings
+		self.radius = self.settings.smoke_radius
+		self.colour = colour
+		self.pos_x = pos_x
+		self.pos_y = pos_y
+
+	def update(self):
+		"""Expand the radius of the circle whilst shrinking border width."""
+		self.radius += self.settings.smoke_growth_speed
+		self.pos_x -= self.settings.smoke_movement_speed
+				
+	def draw_smoke(self):
+		"""Draw the smoke cloud using its current size/position"""
+		pygame.draw.circle(self.screen, self.colour, (self.pos_x, self.pos_y),
+					self.radius)

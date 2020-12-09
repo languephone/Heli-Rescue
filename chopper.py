@@ -44,6 +44,9 @@ class Chopper(Sprite):
 		self.firing_bullets = False
 		self.bullet_firing_state = 0
 
+		self.emitting_smoke = False
+		self.smoke_emitting_state = 0
+
 		# Sound effects
 		self.motor_sound = pygame.mixer.Sound('sounds/chopper.wav')
 		self.crash_sound = pygame.mixer.Sound('sounds/explosion1.ogg')
@@ -63,6 +66,10 @@ class Chopper(Sprite):
 		# Update the bullet firing state
 		if self.firing_bullets:
 			self.bullet_firing_state += 1
+
+		# Update the smoke emitting state
+		if self.emitting_smoke:
+			self.smoke_emitting_state += 1
 
 	def _move_chopper(self):
 		"""Update the ship's position based on the movement flag."""
