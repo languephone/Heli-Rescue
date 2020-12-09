@@ -1,10 +1,12 @@
 import pygame
+from pygame.sprite import Sprite
 
-class Chopper:
+class Chopper(Sprite):
 	"""A class to manage the chopper."""
 
 	def __init__(self, hr_game):
 		"""Initialize the chopper and set its starting position."""
+		super().__init__()
 		self.screen = hr_game.screen
 		self.screen_rect = hr_game.screen.get_rect()
 		self.settings = hr_game.settings
