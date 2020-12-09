@@ -5,9 +5,9 @@ from settings import Settings
 from game_stats import GameStats
 from scoreboard import Scoreboard
 from button import Button, Prompt
-from chopper_rotated import Chopper
+from chopper import Chopper
 from bullet import Bullet
-from asteroid_alternates import Asteroid
+from asteroids import Asteroid
 from background_elements import Cloud
 
 class HeliRescue:

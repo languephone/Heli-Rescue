@@ -1,6 +1,6 @@
 import pygame.freetype
 from pygame.sprite import Group
-from chopper_rotated import Chopper
+from chopper import Chopper
 
 class Scoreboard:
 	"""A class to report scoring information."""
