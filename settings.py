@@ -42,3 +42,6 @@ class Settings:
 		self.shockwave_colour = (81, 69, 69)
 		self.shockwave_growth_speed = 5
 		self.shockwave_border_decay_speed = 0.1
+		
+		# Scoring
+		self.asteroid_points = 10

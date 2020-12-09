@@ -11,6 +11,7 @@ class GameStats:
 		# Game tracking flags
 		self.spacebar_pressed = False
 
+
 	def reset_stats(self):
 		"""Initialize statistics that can change during the game."""
 		self.choppers_left = self.settings.chopper_limit

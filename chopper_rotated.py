@@ -1,10 +1,12 @@
 import pygame
+from pygame.sprite import Sprite
 
-class Chopper:
+class Chopper(Sprite):
 	"""A class to manage the chopper."""
 
 	def __init__(self, hr_game):
 		"""Initialize the chopper and set its starting position."""
+		super().__init__()
 		self.screen = hr_game.screen
 		self.screen_rect = hr_game.screen.get_rect()
 		self.settings = hr_game.settings
@@ -23,6 +25,7 @@ class Chopper:
 		# Start each new chopper below the center of the screen.
 		self.rect.centerx = self.screen_rect.centerx
 		self.rect.y = self.screen_rect.bottom
+		self.hitbox.center = self.rect.center
 
 		# Store a decimal x & y value for the chopper's actual position
 		self.centerx, self.centery = float(self.rect.centerx), float(self.rect.centery)
@@ -44,6 +47,7 @@ class Chopper:
 		# Sound effects
 		self.motor_sound = pygame.mixer.Sound('sounds/chopper.wav')
 		self.crash_sound = pygame.mixer.Sound('sounds/explosion1.ogg')
+		self.gun_sound = pygame.mixer.Sound('sounds/shot.wav')
 
 	def update(self):
 		"""Update position and rotation of chopper."""
@@ -103,5 +107,7 @@ class Chopper:
 		"""Center the chopper on the screen."""
 		self.centery -= self.settings.chopper_speed / 2
 		self.rect.centery = int(self.centery)
+		self.hitbox.centerx = self.rect.centerx + 40
+		self.hitbox.centery = self.rect.centery + 10
 		self._animate_chopper()
 		self._rotate_chopper()

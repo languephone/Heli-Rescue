@@ -3,6 +3,7 @@ from time import sleep
 import pygame
 from settings import Settings
 from game_stats import GameStats
+from scoreboard import Scoreboard
 from button import Button, Prompt
 from chopper_rotated import Chopper
 from bullet import Bullet
@@ -15,7 +16,7 @@ class HeliRescue:
 
 	def __init__(self):
 		"""Initialize the game and create game resources."""
-		#pygame.mixer.pre_init(frequency = 22050, size = 8, channels = 1, buffer = 256)
+		pygame.mixer.pre_init(frequency = 22050, size = 8, channels = 1, buffer = 256)
 		pygame.init()
 		self.clock = pygame.time.Clock()
 		self.settings = Settings()
@@ -28,6 +29,7 @@ class HeliRescue:
 		
 		# Create game objects
 		self.stats = GameStats(self)
+		self.sb = Scoreboard(self)
 		self.chopper = Chopper(self)
 		self.bullets = pygame.sprite.Group()
 		self.asteroids = pygame.sprite.Group()
@@ -39,6 +41,7 @@ class HeliRescue:
 
 		# Make the 'play' button.
 		self.play_button = Button(self, "Play Heli Rescue")
+
 
 	def run_game(self):
 		"""Start the main loop for the game."""
@@ -156,6 +159,9 @@ class HeliRescue:
 			new_bullet = Bullet(self)
 			self.bullets.add(new_bullet)
 			self.chopper.bullet_firing_state = 0
+			
+			# Play sound effect
+			self.chopper.gun_sound.play().set_volume(0.1)
 
 	def _update_bullets(self):
 		"""Update position of bullets and get rid of old bullets."""
@@ -201,6 +207,10 @@ class HeliRescue:
 
 		# Pause.
 		sleep(1)
+
+		# Remove 1 chopper from the reserve
+		self.stats.choppers_left -= 1
+		self.sb.prep_choppers()
  
 	def _create_asteroid(self):
 		"""Create an asteroid and add it to the list of asteroids."""
@@ -228,6 +238,8 @@ class HeliRescue:
 				new_wave = Shockwave(self, asteroid.rect.centerx, 
 									asteroid.rect.centery, self.settings.shockwave_colour )
 				self.shockwaves.add(new_wave)
+				self.stats.score += self.settings.asteroid_points
+				self.sb.prep_score()
 				self.asteroids.remove(asteroid)
 
 		# Look for asteroid-chopper collisions.
@@ -270,6 +282,9 @@ class HeliRescue:
 		# Draw prompt information.
 		if self.stats.spacebar_pressed == False:
 			self.press_spacebar.show_prompt()
+
+		# Draw the score information.
+		self.sb.show_score()
 		
 		# Draw the play button if the game is inactive.
 		if not self.stats.game_active:
