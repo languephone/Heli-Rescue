@@ -9,6 +9,7 @@ from chopper import Chopper
 from bullet import Bullet
 from asteroids import Asteroid
 from background_elements import Cloud
+from particle_effects import Shockwave, ParticleBreak, Smoke
 
 class HeliRescue:
 	"""Overall class to run the Heli Rescue game."""
@@ -26,12 +27,16 @@ class HeliRescue:
 			(self.settings.screen_width, self.settings.screen_height)).convert()
 		pygame.display.set_caption("Heli Rescue")	
 		
+		# Create game objects
 		self.stats = GameStats(self)
 		self.sb = Scoreboard(self)
 		self.chopper = Chopper(self)
 		self.bullets = pygame.sprite.Group()
 		self.asteroids = pygame.sprite.Group()
 		self.clouds = pygame.sprite.Group()
+		self.shockwaves = pygame.sprite.Group()
+		self.particles = pygame.sprite.Group()
+		self.smoke_puffs = pygame.sprite.Group()
 
 		# Tutorial Prompts.
 		self.press_spacebar = Prompt(self, "Hold spacebar to fire bullets")
@@ -51,6 +56,10 @@ class HeliRescue:
 				self._update_bullets()
 				self._hurl_asteroids()
 				self._update_asteroids()
+				self._update_shockwaves()
+				self._update_particles()
+				self._generate_smoke(self.chopper)
+				self._update_smoke()
 				self._create_clouds()
 				self._update_clouds()
 				self._check_tutorial_prompts()
@@ -170,6 +179,33 @@ class HeliRescue:
 
 		self._check_bullet_asteroid_collisions()
 
+	def _update_shockwaves(self):
+		"""Update size and border of shockwaves and get rid of old waves."""
+		self.shockwaves.update()
+
+		# Get rid of waves that have a border approaching zero.
+		for wave in self.shockwaves.copy():
+			if wave.border_width <= 1.5:
+				self.shockwaves.remove(wave)
+
+	def _update_particles(self):
+		"""Update size/position of particles and get rid of old particles."""
+		self.particles.update()
+
+		# Get rid of particles that have a radius approaching zero.
+		for particle in self.particles.copy():
+			if particle.radius <=0:
+				self.particles.remove(particle)
+
+	def _update_smoke(self):
+		"""Update size/position of puffs and get rid of old puffs."""
+		self.smoke_puffs.update()
+
+		# Get rid of particles that have moved offscreen."""
+		for puff in self.smoke_puffs.copy():
+			if puff.pos_x < -puff.radius:
+				self.smoke_puffs.remove(puff)
+
 	def _check_bullet_asteroid_collisions(self):
 		"""Respond to bullet-asteroid collisions."""
 		# Remove bullets that have collided with asteroids.
@@ -183,7 +219,8 @@ class HeliRescue:
 		"""Respond to the chopper hitting an asteroid."""
 
 		# Play sound effect and change image to explosion
-		self.chopper.crash_sound.play()		
+		self.chopper.crash_sound.play()	
+		self.chopper.emitting_smoke = True	
 
 		# Get rid of any remaining asteroids and bullets.
 		self.asteroids.empty()
@@ -222,13 +259,39 @@ class HeliRescue:
 		for asteroid in self.asteroids.copy():
 			if asteroid.health <= 0:
 				asteroid.explosion_sound.play()
+				#self._generate_shockwave(asteroid)
+				self._generate_particle_break(asteroid)
 				self.stats.score += self.settings.asteroid_points
 				self.sb.prep_score()
 				self.asteroids.remove(asteroid)
 
 		# Look for asteroid-chopper collisions.
-		if pygame.sprite.spritecollideany(self.chopper, self.asteroids, self._collide_hit_rect):
+		if pygame.sprite.spritecollideany(self.chopper, self.asteroids, 
+										self._collide_hit_rect):
 			self._chopper_hit()
+	
+	def _generate_shockwave(self, asteroid):
+		"""Create a shockwave on destruction of item."""
+		new_wave = Shockwave(self, asteroid.rect.centerx, 
+						asteroid.rect.centery, self.settings.shockwave_colour)
+		self.shockwaves.add(new_wave)
+
+	def _generate_particle_break(self, asteroid):
+		"""Create group of particles on destruction of item."""
+		for i in range(self.settings.particle_count):
+			new_particle = ParticleBreak(self, asteroid.rect.centerx, 
+					asteroid.rect.centery, self.settings.particle_colour)
+			self.particles.add(new_particle)
+
+	def _generate_smoke(self, chopper):
+		"""Create smoke particles on hitting asteroid."""
+		if (self.chopper.emitting_smoke == True and 
+				self.chopper.smoke_emitting_state > 
+				self.settings.smoke_emitting_threshold):
+			new_puff = Smoke(self, chopper.rect.centerx, chopper.rect.centery,
+							 colour='grey')
+			self.smoke_puffs.add(new_puff)
+			self.chopper.smoke_emitting_state = 0
 
 	def _collide_hit_rect(self, one, two):
 		return one.hitbox.colliderect(two.rect)
@@ -259,6 +322,12 @@ class HeliRescue:
 		self.chopper.blitme()
 		for bullet in self.bullets.sprites():
 			bullet.draw_bullet()
+		for wave in self.shockwaves.sprites():
+			wave.draw_wave()
+		for particle in self.particles.sprites():
+			particle.draw_particle()
+		for puff in self.smoke_puffs.sprites():
+			puff.draw_smoke()
 		self.asteroids.draw(self.screen)
 
 		# Draw prompt information.

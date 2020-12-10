@@ -36,5 +36,27 @@ class Settings:
 		self.cloud_max_count = 3
 		self.cloud_maximum_y = int(self.screen_height / 2)
 
+		# Shockwave Settings
+		self.shockwave_radius = 20
+		self.shockwave_border_width = 8
+		self.shockwave_colour = (81, 69, 69)
+		self.shockwave_growth_speed = 5
+		self.shockwave_border_decay_speed = 0.1
+		
+		# ParticleBreak Settings
+		self.particle_radius = 12
+		self.particle_decay_speed = 0.15
+		self.particle_colour = (81, 69, 69)
+		self.particle_movement_speed = 4
+		self.particle_count = 15
+
+		# Smoke Settings
+		self.smoke_radius = 10
+		self.smoke_colour = (81, 69, 69)
+		self.smoke_growth_speed = 0.25
+		self.smoke_movement_speed = 5
+		self.smoke_max_radius = 50
+		self.smoke_emitting_threshold = 50
+
 		# Scoring
 		self.asteroid_points = 10
