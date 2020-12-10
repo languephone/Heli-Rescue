@@ -198,7 +198,7 @@ class HeliRescue:
 				self.particles.remove(particle)
 
 	def _update_smoke(self):
-		"""Update size/position of particles and get rid of old particles."""
+		"""Update size/position of puffs and get rid of old puffs."""
 		self.smoke_puffs.update()
 
 		# Get rid of particles that have moved offscreen."""
@@ -278,7 +278,7 @@ class HeliRescue:
 
 	def _generate_particle_break(self, asteroid):
 		"""Create group of particles on destruction of item."""
-		for i in range(15):
+		for i in range(self.settings.particle_count):
 			new_particle = ParticleBreak(self, asteroid.rect.centerx, 
 					asteroid.rect.centery, self.settings.particle_colour)
 			self.particles.add(new_particle)

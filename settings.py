@@ -45,9 +45,10 @@ class Settings:
 		
 		# ParticleBreak Settings
 		self.particle_radius = 12
-		self.particle_decay_speed = 0.2
+		self.particle_decay_speed = 0.15
 		self.particle_colour = (81, 69, 69)
-		self.particle_movement_speed = 3
+		self.particle_movement_speed = 4
+		self.particle_count = 15
 
 		# Smoke Settings
 		self.smoke_radius = 10

@@ -51,8 +51,8 @@ class ParticleBreak(Sprite):
 
 	def draw_particle(self):
 		"""draw the particle using its current size/location."""
-		pygame.draw.circle(self.screen, self.colour, (self.pos_x, self.pos_y),
-			self.radius)
+		self.rect = (self.pos_x, self.pos_y, self.radius, self.radius)
+		pygame.draw.rect(self.screen, self.colour, self.rect)
 
 class Smoke(Sprite):
 	"""A classs to manage smoke effects on damage and victory."""
