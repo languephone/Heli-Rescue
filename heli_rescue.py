@@ -7,7 +7,7 @@ from scoreboard import Scoreboard
 from button import Button, Prompt
 from chopper import Chopper
 from bullet import Bullet
-from asteroid_alternates import Asteroid
+from asteroids import Asteroid
 from background_elements import Cloud
 from particle_effects import Shockwave, ParticleBreak, Smoke
 
