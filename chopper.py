@@ -44,6 +44,7 @@ class Chopper(Sprite):
 		self.firing_bullets = False
 		self.bullet_firing_state = 0
 
+    # Smoke Status Flags
 		self.emitting_smoke = False
 		self.smoke_emitting_state = 0
 
