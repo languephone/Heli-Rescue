@@ -14,7 +14,7 @@ class Scoreboard:
 		self.stats = hr_game.stats
 
 		# Font settings for scoring information.
-		self.text_color = (30, 30, 30)
+		self.text_color = (255, 255, 255)
 		self.font = pygame.freetype.SysFont('Impact', 32)
 
 		# Prepare the initial score image.
