@@ -22,11 +22,12 @@ class HeliRescue:
 		self.settings = Settings()
 		self.screen = pygame.display.set_mode(
 			(self.settings.screen_width, self.settings.screen_height))
-		self.bg_surface = pygame.transform.scale(
-			pygame.image.load(self.settings.bg_image), 
-			(self.settings.screen_width, self.settings.screen_height)).convert()
+		self.bg_surface = pygame.transform.scale(pygame.image.load(self.settings.bg_image), (self.settings.small_screen_size)).convert()
 		pygame.display.set_caption("Heli Rescue")	
 		
+		# Create smaller screen at half size to scale all pixels
+		self.small_screen = pygame.Surface(self.settings.small_screen_size)
+
 		# Create game objects
 		self.stats = GameStats(self)
 		self.sb = Scoreboard(self)
@@ -317,8 +318,8 @@ class HeliRescue:
 	
 	def _update_screen(self):
 		"""Update images on the screen, and flip to the new screen."""
-		self.screen.blit(self.bg_surface, (0,0))
-		self.clouds.draw(self.screen)
+		self.small_screen.blit(self.bg_surface, (0,0))
+		self.clouds.draw(self.small_screen)
 		self.chopper.blitme()
 		for bullet in self.bullets.sprites():
 			bullet.draw_bullet()
@@ -328,7 +329,7 @@ class HeliRescue:
 			particle.draw_particle()
 		for puff in self.smoke_puffs.sprites():
 			puff.draw_smoke()
-		self.asteroids.draw(self.screen)
+		self.asteroids.draw(self.small_screen)
 
 		# Draw prompt information.
 		if self.stats.spacebar_pressed == False:
@@ -342,6 +343,7 @@ class HeliRescue:
 			self.play_button.draw_button()
 
 		# Make the most recently drawn screen visible.
+		self.screen.blit(pygame.transform.scale(self.small_screen, (1200, 800)), (0,0))
 		pygame.display.flip()
 			
 if __name__ == '__main__':

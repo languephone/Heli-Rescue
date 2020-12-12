@@ -7,7 +7,7 @@ class Bullet(Sprite):
 	def __init__(self, hr_game):
 		"""Create a bullet object at the chopper's current position."""
 		super().__init__()
-		self.screen = hr_game.screen
+		self.small_screen = hr_game.small_screen
 		self.settings = hr_game.settings
 		self.color = self.settings.bullet_color
 
@@ -29,4 +29,4 @@ class Bullet(Sprite):
 
 	def draw_bullet(self):
 		"""Draw the bullet to the screen."""
-		pygame.draw.rect(self.screen, self.color, self.rect)
+		pygame.draw.rect(self.small_screen, self.color, self.rect)

@@ -9,10 +9,10 @@ class Button:
 		self.screen_rect = self.screen.get_rect()
 
 		# Set the dimensions and properties of the button.
-		self.width, self.height = 400, 100
+		self.width, self.height = 200, 50
 		self.button_color = (111, 115, 120)
 		self.text_color = (255, 255, 255)
-		self.font = pygame.font.SysFont('Impact', 48, False)
+		self.font = pygame.font.SysFont('Impact', 24, False)
 
 		# Build the button's rect object and center it.
 		self.rect = pygame.Rect(0, 0, self.width, self.height)
@@ -37,14 +37,14 @@ class Prompt:
 	"""A class to create flashing text prompts on screen."""
 	def __init__(self, hr_game, msg):
 		"""Initializes prompt attributes."""
-		self.screen = hr_game.screen
+		self.small_screen = hr_game.small_screen
 		self.stats = hr_game.stats
 		self.settings = hr_game.settings
 		self.chopper = hr_game.chopper
 
 		# Font settings for prompt information.
 		self.text_color = (255, 255, 255)
-		self.font = pygame.font.SysFont('Impact', 36, False)
+		self.font = pygame.font.SysFont('Impact', 12, False)
 
 		# Prepare the prompt message.
 		self._prep_msg(msg)
@@ -53,15 +53,14 @@ class Prompt:
 		"""Turn the msg into a rendered image and place beneath chopper
 		rect."""
 		self.prompt_image = self.font.render(msg, True, self.text_color)
-		self.prompt_image.set_alpha(150)
 		self.prompt_image_rect = self.prompt_image.get_rect()
 		self.prompt_image_rect.midtop = self.chopper.rect.midbottom
 
 	def show_prompt(self):
 		"""Draw prompt to the screen."""
-		self.screen.blit(self.prompt_image, self.prompt_image_rect)
+		self.small_screen.blit(self.prompt_image, self.prompt_image_rect)
 
 	def update(self):
 		# Keep text immediately below chopper
 		self.prompt_image_rect.midtop = (self.chopper.rect.centerx, 
-			self.chopper.rect.centery + 70)
+			self.chopper.rect.centery + 35)

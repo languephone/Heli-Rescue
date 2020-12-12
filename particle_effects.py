@@ -8,7 +8,7 @@ class Shockwave(Sprite):
 	def __init__(self, hr_game, pos_x, pos_y, colour='white'):
 		"""Create a shockwave at a specified origin point."""
 		super().__init__()
-		self.screen = hr_game.screen
+		self.screen = hr_game.small_screen
 		self.settings = hr_game.settings
 		self.radius = self.settings.shockwave_radius
 		self.border_width = self.settings.shockwave_border_width
@@ -32,7 +32,7 @@ class ParticleBreak(Sprite):
 	def __init__(self, hr_game, pos_x, pos_y, colour='white'):
 		"""Create a particle at a specified origin point."""
 		super().__init__()
-		self.screen = hr_game.screen
+		self.screen = hr_game.small_screen
 		self.settings = hr_game.settings
 		self.radius = self.settings.particle_radius
 		self.colour = colour
@@ -60,7 +60,7 @@ class Smoke(Sprite):
 	def __init__(self, hr_game, pos_x, pos_y, colour='white'):
 		"""Create a smoke bubble at a specified origin point."""
 		super().__init__()
-		self.screen = hr_game.screen
+		self.screen = hr_game.small_screen
 		self.settings = hr_game.settings
 		self.radius = self.settings.smoke_radius
 		self.colour = colour
