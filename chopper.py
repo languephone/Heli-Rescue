@@ -7,8 +7,8 @@ class Chopper(Sprite):
 	def __init__(self, hr_game):
 		"""Initialize the chopper and set its starting position."""
 		super().__init__()
-		self.screen = hr_game.screen
-		self.screen_rect = hr_game.screen.get_rect()
+		self.screen = hr_game.small_screen
+		self.screen_rect = hr_game.small_screen.get_rect()
 		self.settings = hr_game.settings
 
 		# Load the chopper image and get its rect.
@@ -18,9 +18,9 @@ class Chopper(Sprite):
 				f'images/helicopter_{i+1}.png').convert_alpha())
 		self.current_image = 0
 		self.image = self.images[self.current_image]
-		self.rotated_image = pygame.transform.rotozoom(self.image, 0, 3)
+		self.rotated_image = pygame.transform.rotate(self.image, 0)
 		self.rect = self.rotated_image.get_rect()
-		self.hitbox = pygame.Rect(0, 0, 96, 63)
+		self.hitbox = pygame.Rect(0, 0, 40, 23)
 		
 		# Start each new chopper below the center of the screen.
 		self.rect.centerx = self.screen_rect.centerx
@@ -61,8 +61,8 @@ class Chopper(Sprite):
 		self.rect = self.rotated_image.get_rect()
 		self.rect.centerx = int(self.centerx)
 		self.rect.centery = int(self.centery)
-		self.hitbox.centerx = self.rect.centerx + 40
-		self.hitbox.centery = self.rect.centery + 10
+		self.hitbox.centerx = self.rect.centerx + 13
+		self.hitbox.centery = self.rect.centery + 3
 
 		# Update the bullet firing state
 		if self.firing_bullets:
@@ -96,8 +96,7 @@ class Chopper(Sprite):
 				self.tilt += self.settings.chopper_tilt_speed
 			elif not self.moving_left and self.tilt > 0:
 				self.tilt -= self.settings.chopper_tilt_speed
-		self.rotated_image = pygame.transform.rotozoom(self.image, 
-														self.tilt, 3)
+		self.rotated_image = pygame.transform.rotate(self.image, self.tilt)
 
 	def _animate_chopper(self):
 		self.current_image += 0.25
@@ -108,14 +107,14 @@ class Chopper(Sprite):
 	def blitme(self):
 		"""Draw the chopper at its current location."""
 		self.screen.blit(self.rotated_image, self.rect)
-		pygame.draw.rect(self.screen, 'Red', self.rect, 2)
-		pygame.draw.rect(self.screen, 'Green', self.hitbox, 2)
+		pygame.draw.rect(self.screen, 'Red', self.rect, 1)
+		pygame.draw.rect(self.screen, 'Green', self.hitbox, 1)
 
 	def center_chopper(self):
 		"""Center the chopper on the screen."""
 		self.centery -= self.settings.chopper_speed / 2
 		self.rect.centery = int(self.centery)
-		self.hitbox.centerx = self.rect.centerx + 40
-		self.hitbox.centery = self.rect.centery + 10
+		self.hitbox.centerx = self.rect.centerx + 13
+		self.hitbox.centery = self.rect.centery + 3
 		self._animate_chopper()
 		self._rotate_chopper()
