@@ -19,7 +19,7 @@ class Settings:
 		self.chopper_limit = 3
 
 		# Bullet settings
-		self.bullet_speed = 5
+		self.bullet_speed = 4
 		self.bullet_width = 7
 		self.bullet_height = 2
 		self.bullet_color = (60, 60, 60)
@@ -40,10 +40,10 @@ class Settings:
 		self.cloud_maximum_y = int(self.screen_height / 2)
 
 		# Shockwave Settings
-		self.shockwave_radius = 10
-		self.shockwave_border_width = 4
+		self.shockwave_radius = 6
+		self.shockwave_border_width = 6
 		self.shockwave_colour = (81, 69, 69)
-		self.shockwave_growth_speed = 5
+		self.shockwave_growth_speed = 3
 		self.shockwave_border_decay_speed = 0.1
 		
 		# ParticleBreak Settings
