@@ -18,14 +18,15 @@ class Chopper(Sprite):
 				f'images/helicopter_{i+1}.png').convert_alpha())
 		self.current_image = 0
 		self.image = self.images[self.current_image]
-		self.rotated_image = pygame.transform.rotozoom(self.image, 0, 3)
+		self.rotated_image = pygame.transform.rotozoom(self.image, 0, 2)
 		self.rect = self.rotated_image.get_rect()
-		self.hitbox = pygame.Rect(0, 0, 96, 63)
+		self.hitbox = pygame.Rect(0, 0, 64, 42)
 		
 		# Start each new chopper below the center of the screen.
 		self.rect.centerx = self.screen_rect.centerx
 		self.rect.y = self.screen_rect.bottom
-		self.hitbox.center = self.rect.center
+		self.hitbox.centerx = self.rect.centerx + 26
+		self.hitbox.centery = self.rect.centery + 6
 
 		# Store a decimal x & y value for the chopper's actual position
 		self.centerx, self.centery = float(self.rect.centerx), float(self.rect.centery)
@@ -61,8 +62,8 @@ class Chopper(Sprite):
 		self.rect = self.rotated_image.get_rect()
 		self.rect.centerx = int(self.centerx)
 		self.rect.centery = int(self.centery)
-		self.hitbox.centerx = self.rect.centerx + 40
-		self.hitbox.centery = self.rect.centery + 10
+		self.hitbox.centerx = self.rect.centerx + 26
+		self.hitbox.centery = self.rect.centery + 6
 
 		# Update the bullet firing state
 		if self.firing_bullets:
@@ -97,7 +98,7 @@ class Chopper(Sprite):
 			elif not self.moving_left and self.tilt > 0:
 				self.tilt -= self.settings.chopper_tilt_speed
 		self.rotated_image = pygame.transform.rotozoom(self.image, 
-														self.tilt, 3)
+														self.tilt, 2)
 
 	def _animate_chopper(self):
 		self.current_image += 0.25
@@ -115,7 +116,7 @@ class Chopper(Sprite):
 		"""Center the chopper on the screen."""
 		self.centery -= self.settings.chopper_speed / 2
 		self.rect.centery = int(self.centery)
-		self.hitbox.centerx = self.rect.centerx + 40
-		self.hitbox.centery = self.rect.centery + 10
+		self.hitbox.centerx = self.rect.centerx + 26
+		self.hitbox.centery = self.rect.centery + 6
 		self._animate_chopper()
 		self._rotate_chopper()
