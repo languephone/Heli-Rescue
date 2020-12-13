@@ -22,7 +22,9 @@ class HeliRescue:
 		self.settings = Settings()
 		self.screen = pygame.display.set_mode(
 			(self.settings.screen_width, self.settings.screen_height))
-		self.bg_surface = pygame.transform.scale(pygame.image.load(self.settings.bg_image), (self.settings.small_screen_size)).convert()
+		self.bg_surface = pygame.transform.scale(
+			pygame.image.load(self.settings.bg_image),
+			 (self.settings.small_screen_size)).convert()
 		pygame.display.set_caption("Heli Rescue")	
 		
 		# Create smaller screen at half size to scale all pixels
@@ -99,7 +101,11 @@ class HeliRescue:
 
 	def _check_play_button(self, mouse_pos):
 		"""Start a new game when the player clicks Play."""
-		button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+		
+		# convert mouse_pos to scale of screen
+		mouse_pos_scaled = (mouse_pos[0] / 2, mouse_pos[1] / 2)
+		
+		button_clicked = self.play_button.rect.collidepoint(mouse_pos_scaled)
 		if button_clicked and not self.stats.game_active:
 			self._start_game()
 

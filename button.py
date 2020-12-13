@@ -5,7 +5,7 @@ class Button:
 
 	def __init__(self, hr_game, msg):
 		"""Initializes button attributes."""
-		self.screen = hr_game.screen
+		self.screen = hr_game.small_screen
 		self.screen_rect = self.screen.get_rect()
 
 		# Set the dimensions and properties of the button.
@@ -63,4 +63,4 @@ class Prompt:
 	def update(self):
 		# Keep text immediately below chopper
 		self.prompt_image_rect.midtop = (self.chopper.rect.centerx, 
-			self.chopper.rect.centery + 35)
+			self.chopper.rect.centery + 15)
