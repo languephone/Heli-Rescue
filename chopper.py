@@ -75,13 +75,13 @@ class Chopper(Sprite):
 	def _move_chopper(self):
 		"""Update the ship's position based on the movement flag."""
 		# Update the ship's x/y value, not the rect.
-		if self.moving_right and self.rect.left < (self.screen_rect.right - 50):
+		if self.moving_right and self.rect.left < (self.screen_rect.right - 25):
 			self.centerx += self.settings.chopper_speed
-		if self.moving_left and self.rect.right > 50:
+		if self.moving_left and self.rect.right > 25:
 			self.centerx -= self.settings.chopper_speed
-		if self.moving_down and self.rect.top < (self.screen_rect.bottom - 50):
+		if self.moving_down and self.rect.top < (self.screen_rect.bottom - 25):
 			self.centery += self.settings.chopper_speed
-		if self.moving_up and self.rect.bottom > 50:
+		if self.moving_up and self.rect.bottom > 25:
 			self.centery -= self.settings.chopper_speed
 
 	def _rotate_chopper(self):
