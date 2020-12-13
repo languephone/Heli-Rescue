@@ -13,7 +13,7 @@ class Settings:
 		self.bg_image = 'images/sunset_gradient.png'
 
 		# Chopper settings
-		self.chopper_speed = 4
+		self.chopper_speed = 2
 		self.chopper_max_tilt = 8
 		self.chopper_tilt_speed = 0.5
 		self.chopper_limit = 3
@@ -47,19 +47,19 @@ class Settings:
 		self.shockwave_border_decay_speed = 0.1
 		
 		# ParticleBreak Settings
-		self.particle_radius = 6
+		self.particle_radius = 8
 		self.particle_decay_speed = 0.15
 		self.particle_colour = (81, 69, 69)
 		self.particle_movement_speed = 2
 		self.particle_count = 15
 
 		# Smoke Settings
-		self.smoke_radius = 5
+		self.smoke_radius = 3
 		self.smoke_colour = (81, 69, 69)
-		self.smoke_growth_speed = 0.25
+		self.smoke_growth_speed = 0.12
 		self.smoke_movement_speed = 2.5
-		self.smoke_max_radius = 50
-		self.smoke_emitting_threshold = 50
+		self.smoke_max_radius = 15
+		self.smoke_emitting_threshold = 30
 
 		# Scoring
 		self.asteroid_points = 10

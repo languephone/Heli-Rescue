@@ -70,7 +70,7 @@ class HeliRescue:
 
 	def intro_game(self):
 		"""A temporary loop to create an intro scene."""
-		while self.chopper.centery > self.settings.screen_height / 2:
+		while self.chopper.centery > self.settings.small_screen_height / 2:
 			self._check_events()
 			
 			if self.stats.game_active:
