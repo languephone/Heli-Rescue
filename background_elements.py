@@ -12,6 +12,7 @@ class Cloud(Sprite):
 
 		# Load the cloud image and set its rect attribute.
 		self.image = pygame.image.load('images/cloud5.png').convert_alpha()
+		self.image = pygame.transform.scale2x(self.image)
 		self.rect = self.image.get_rect()
 
 		# Start each new cloud in a random vertical space on the right of the screen
@@ -25,11 +26,6 @@ class Cloud(Sprite):
 		self.speed = randint(1, self.settings.cloud_max_speed)
 
 	def update(self):
-		"""Move the cloud to the left and rotate."""
-		# Set rotation
-		# self.rotation += 10
-		# self.rotated_image = pygame.transform.rotozoom(self.image, self.rotation, 1)
-		
-		# Move to left
+		"""Move the cloud to the left"""
 		self.x -= self.speed
 		self.rect.x = self.x
