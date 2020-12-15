@@ -103,9 +103,9 @@ class HeliRescue:
 		"""Start a new game when the player clicks Play."""
 		
 		# convert mouse_pos to scale of screen
-		mouse_pos_scaled = (mouse_pos[0] / 2, mouse_pos[1] / 2)
+		#mouse_pos_scaled = (mouse_pos[0] / 2, mouse_pos[1] / 2)
 		
-		button_clicked = self.play_button.rect.collidepoint(mouse_pos_scaled)
+		button_clicked = self.play_button.rect.collidepoint(mouse_pos)
 		if button_clicked and not self.stats.game_active:
 			self._start_game()
 
