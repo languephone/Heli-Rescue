@@ -5,14 +5,14 @@ class Button:
 
 	def __init__(self, hr_game, msg):
 		"""Initializes button attributes."""
-		self.screen = hr_game.small_screen
+		self.screen = hr_game.screen
 		self.screen_rect = self.screen.get_rect()
 
 		# Set the dimensions and properties of the button.
-		self.width, self.height = 200, 50
+		self.width, self.height = 400, 100
 		self.button_color = (111, 115, 120)
 		self.text_color = (255, 255, 255)
-		self.font = pygame.font.SysFont('Impact', 24, False)
+		self.font = pygame.font.SysFont('Impact', 48, False)
 
 		# Build the button's rect object and center it.
 		self.rect = pygame.Rect(0, 0, self.width, self.height)

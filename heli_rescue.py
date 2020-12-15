@@ -181,7 +181,7 @@ class HeliRescue:
 		
 		# Get rid of bullets that are off the edge of the screen.
 		for bullet in self.bullets.copy():
-			if bullet.rect.left > self.settings.screen_width:
+			if bullet.rect.left > self.settings.small_screen_width:
 				self.bullets.remove(bullet)
 
 		self._check_bullet_asteroid_collisions()
@@ -336,7 +336,10 @@ class HeliRescue:
 		for puff in self.smoke_puffs.sprites():
 			puff.draw_smoke()
 		self.asteroids.draw(self.small_screen)
-
+		
+		# Draw small screen onto the big screen
+		self.screen.blit(pygame.transform.scale(self.small_screen, (1200, 800)), (0,0))
+		
 		# Draw prompt information.
 		if self.stats.spacebar_pressed == False:
 			self.press_spacebar.show_prompt()
@@ -349,7 +352,6 @@ class HeliRescue:
 			self.play_button.draw_button()
 
 		# Make the most recently drawn screen visible.
-		self.screen.blit(pygame.transform.scale(self.small_screen, (1200, 800)), (0,0))
 		pygame.display.flip()
 			
 if __name__ == '__main__':
