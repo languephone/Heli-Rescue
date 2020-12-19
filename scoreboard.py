@@ -31,11 +31,6 @@ class Scoreboard:
 		self.score_image[1][0] = (self.screen_rect.right - 
 			self.score_image[1][2] - 20)
 
-	def show_score(self):
-		"""Draw score and reserve choppers to the screen."""
-		self.screen.blit(self.score_image[0], self.score_image[1])
-		self.choppers.draw(self.screen)
-
 	def prep_choppers(self):
 		"""Show how many choppers are left."""
 		self.choppers = Group()
@@ -44,3 +39,8 @@ class Scoreboard:
 			chopper.rect.x = 10 + chopper_number * (chopper.rect.width)
 			chopper.rect.y = 10
 			self.choppers.add(chopper)
+	
+	def show_scoreboard(self):
+		"""Draw score and reserve choppers to the screen."""
+		self.screen.blit(self.score_image[0], self.score_image[1])
+		self.choppers.draw(self.screen)

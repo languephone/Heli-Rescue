@@ -337,16 +337,17 @@ class HeliRescue:
 			puff.draw_smoke()
 		self.asteroids.draw(self.small_screen)
 		
-		# Draw small screen onto the big screen
-		self.screen.blit(pygame.transform.scale(self.small_screen, (1200, 800)), (0,0))
-		
 		# Draw prompt information.
 		if self.stats.spacebar_pressed == False:
 			self.press_spacebar.show_prompt()
 
-		# Draw the score information.
-		self.sb.show_score()
+		# Draw small screen onto the big screen
+		self.screen.blit(pygame.transform.scale(self.small_screen,
+			 (self.settings.screen_width, self.settings.screen_height)), (0,0))
 		
+		# Draw the score information.
+		self.sb.show_scoreboard()
+
 		# Draw the play button if the game is inactive.
 		if not self.stats.game_active:
 			self.play_button.draw_button()
