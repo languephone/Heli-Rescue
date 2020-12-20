@@ -8,14 +8,14 @@ class Scoreboard:
 	def __init__(self, hr_game):
 		"""Initialize scorekeeping attributes."""
 		self.hr_game = hr_game
-		self.screen = hr_game.screen
+		self.screen = hr_game.small_screen
 		self.screen_rect = self.screen.get_rect()
 		self.settings = hr_game.settings
 		self.stats = hr_game.stats
 
 		# Font settings for scoring information.
 		self.text_color = (255, 255, 255)
-		self.font = pygame.freetype.SysFont('Impact', 32)
+		self.font = pygame.freetype.SysFont('Impact', 18)
 
 		# Prepare the initial score image.
 		self.prep_score()
@@ -36,7 +36,9 @@ class Scoreboard:
 		self.choppers = Group()
 		for chopper_number in range(self.stats.choppers_left):
 			chopper = Chopper(self.hr_game)
-			chopper.rect.x = 10 + chopper_number * (chopper.rect.width)
+			chopper.image = pygame.transform.scale(chopper.image,
+				 (chopper.rect.width // 2, chopper.rect.height // 2))
+			chopper.rect.x = 10 + chopper_number * (chopper.rect.width //2)
 			chopper.rect.y = 10
 			self.choppers.add(chopper)
 	
