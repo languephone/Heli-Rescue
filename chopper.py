@@ -18,7 +18,8 @@ class Chopper(Sprite):
 				f'images/helicopter_{i+1}.png').convert_alpha())
 		self.current_image = 0
 		self.image = self.images[self.current_image]
-		self.rotated_image = pygame.transform.rotozoom(self.image, 0, 2)
+		self.scaled_image = pygame.transform.scale2x(self.image)
+		self.rotated_image = self.scaled_image
 		self.rect = self.rotated_image.get_rect()
 		self.hitbox = pygame.Rect(0, 0, 64, 42)
 		
@@ -97,8 +98,8 @@ class Chopper(Sprite):
 				self.tilt += self.settings.chopper_tilt_speed
 			elif not self.moving_left and self.tilt > 0:
 				self.tilt -= self.settings.chopper_tilt_speed
-		self.rotated_image = pygame.transform.rotozoom(self.image, 
-														self.tilt, 2)
+		self.rotated_image = pygame.transform.rotate(self.scaled_image, 
+														self.tilt)
 
 	def _animate_chopper(self):
 		self.current_image += 0.25
