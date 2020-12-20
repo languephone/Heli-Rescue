@@ -41,6 +41,6 @@ class Scoreboard:
 		self.choppers = Group()
 		for chopper_number in range(self.stats.choppers_left):
 			chopper = Chopper(self.hr_game)
-			chopper.rect.x = 10 + chopper_number * (chopper.rect.width / 3)
+			chopper.rect.x = 10 + chopper_number * (chopper.rect.width / 2)
 			chopper.rect.y = 10
 			self.choppers.add(chopper)
