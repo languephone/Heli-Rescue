@@ -61,7 +61,6 @@ class Chopper(Sprite):
 		"""Update position and rotation of chopper."""
 		self._move_chopper()
 		self._animate_chopper()
-		print(self.current_image)
 		self._rotate_chopper()
 		self.rect = self.rotated_image.get_rect()
 		self.rect.centerx = int(self.centerx)
@@ -110,6 +109,7 @@ class Chopper(Sprite):
 		if self.current_image >= len(self.images):
 			self.current_image = 0
 		self.image = self.images[int(self.current_image)]
+		self.scaled_image = pygame.transform.scale2x(self.image)
 
 	def blitme(self):
 		"""Draw the chopper at its current location."""
