@@ -22,12 +22,14 @@ class Chopper(Sprite):
 		self.rotated_image = self.scaled_image
 		self.rect = self.rotated_image.get_rect()
 		self.hitbox = pygame.Rect(0, 0, 64, 42)
+		self.sparkbox = pygame.Rect(0, 0, 120, 14)
 		
 		# Start each new chopper below the center of the screen.
 		self.rect.centerx = self.screen_rect.centerx
 		self.rect.y = self.screen_rect.bottom
 		self.hitbox.centerx = self.rect.centerx + 26
 		self.hitbox.centery = self.rect.centery + 6
+		self.sparkbox.midbottom = self.hitbox.midtop
 
 		# Store a decimal x & y value for the chopper's actual position
 		self.centerx, self.centery = float(self.rect.centerx), float(self.rect.centery)
@@ -59,12 +61,14 @@ class Chopper(Sprite):
 		"""Update position and rotation of chopper."""
 		self._move_chopper()
 		self._animate_chopper()
+		print(self.current_image)
 		self._rotate_chopper()
 		self.rect = self.rotated_image.get_rect()
 		self.rect.centerx = int(self.centerx)
 		self.rect.centery = int(self.centery)
 		self.hitbox.centerx = self.rect.centerx + 26
 		self.hitbox.centery = self.rect.centery + 6
+		self.sparkbox.midbottom = self.hitbox.midtop
 
 		# Update the bullet firing state
 		if self.firing_bullets:
@@ -112,12 +116,26 @@ class Chopper(Sprite):
 		self.screen.blit(self.rotated_image, self.rect)
 		pygame.draw.rect(self.screen, 'Red', self.rect, 2)
 		pygame.draw.rect(self.screen, 'Green', self.hitbox, 2)
+		pygame.draw.rect(self.screen, 'Blue', self.sparkbox, 2)
 
 	def center_chopper(self):
 		"""Center the chopper on the screen."""
-		self.centery -= self.settings.chopper_speed / 2
+		if self.centery > self.settings.screen_height / 2:
+			self.centery -= self.settings.chopper_speed / 2
+
+		if self.centery < self.settings.screen_height / 2:
+			self.centery += self.settings.chopper_speed / 2
+		
+		if self.centerx > self.settings.screen_width / 2:
+			self.centerx -= self.settings.chopper_speed / 2
+
+		if self.centerx < self.settings.screen_width / 2:
+			self.centerx += self.settings.chopper_speed / 2
+
 		self.rect.centery = int(self.centery)
+		self.rect.centerx = int(self.centerx)
 		self.hitbox.centerx = self.rect.centerx + 26
 		self.hitbox.centery = self.rect.centery + 6
+		self.sparkbox.midbottom = self.hitbox.midtop
 		self._animate_chopper()
 		self._rotate_chopper()

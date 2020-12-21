@@ -4,27 +4,38 @@ class CutScene():
 	def __init__(self, name, hr_game):
 		"""Initialize the cut scene."""
 		self.name = name
+		self.hr_game = hr_game
 		self.screen = hr_game.screen
 		self.screen_rect = hr_game.screen.get_rect()
 		self.chopper = hr_game.chopper
 		self.settings = hr_game.settings
-		self.vertical_offset = 
-		self.horizontal_offset = 
+		self.active = False
 
 	def temp_loop(self):
 		"""A temporary loop to run the scene."""
-		while True:
-			hr_game._check_events()
+		while self.active:
+			
+			# Continue to check for 'quit' events
+			self.hr_game._check_events()
+			
+			# Run cut scene
 			self.update()
-			hr_game._update_screen()
-			hr_game.clock.tick(120)
+			
+			# Update on-screen items so that they do not appear to freeze
+			self.hr_game._update_bullets()
+			self.hr_game._update_asteroids()
+			self.hr_game._update_shockwaves()
+			self.hr_game._update_particles()
+			self.hr_game._generate_smoke(self.chopper)
+			self.hr_game._update_smoke()
+			self.hr_game._update_clouds()
+
+			self.hr_game._update_screen()
+			self.hr_game.clock.tick(120)
 
 	def update(self):
 		"""The actions of the cut scene."""
-		while self.chopper.center != self.chopper.screen_rect.center:
-			self.chopper.centery -= self.settings.chopper_speed / 2
-			self.rect.centery = int(self.centery)
-			self.hitbox.centerx = self.rect.centerx + 26
-			self.hitbox.centery = self.rect.centery + 6
-			self._animate_chopper()
-			self._rotate_chopper()
+		self.chopper.center_chopper()
+		
+		if self.chopper.rect.center == ((self.settings.screen_width / 2, self.settings.screen_height / 2)):
+			self.active = False

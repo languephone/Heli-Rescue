@@ -9,6 +9,7 @@ from chopper import Chopper
 from bullet import Bullet
 from asteroids import Asteroid
 from background_elements import Cloud
+from cut_scene import CutScene
 from particle_effects import Shockwave, ParticleBreak, Smoke
 
 class HeliRescue:
@@ -20,6 +21,7 @@ class HeliRescue:
 		pygame.init()
 		self.clock = pygame.time.Clock()
 		self.settings = Settings()
+		
 		self.screen = pygame.display.set_mode(
 			(self.settings.screen_width, self.settings.screen_height))
 		self.bg_surface = pygame.transform.scale(
@@ -31,6 +33,7 @@ class HeliRescue:
 		self.stats = GameStats(self)
 		self.sb = Scoreboard(self)
 		self.chopper = Chopper(self)
+		self.cut_scene = CutScene('level clear', self)
 		self.bullets = pygame.sprite.Group()
 		self.asteroids = pygame.sprite.Group()
 		self.clouds = pygame.sprite.Group()
@@ -56,6 +59,7 @@ class HeliRescue:
 				self._update_bullets()
 				self._hurl_asteroids()
 				self._update_asteroids()
+				self._check_collisions()
 				self._update_shockwaves()
 				self._update_particles()
 				self._generate_smoke(self.chopper)
@@ -63,6 +67,7 @@ class HeliRescue:
 				self._create_clouds()
 				self._update_clouds()
 				self._check_tutorial_prompts()
+				self._check_cut_scene()
 			
 			self._update_screen()
 			self.clock.tick(120)
@@ -102,6 +107,11 @@ class HeliRescue:
 		if button_clicked and not self.stats.game_active:
 			self._start_game()
 
+	def _check_cut_scene(self):
+		"""Check for conditions to trigger a cut scene."""
+		if self.cut_scene.active == True:
+			self.cut_scene.temp_loop()
+
 	def _check_keydown_events(self, event):
 		"""Respond to keypresses."""
 		if event.key == pygame.K_RIGHT:
@@ -115,6 +125,8 @@ class HeliRescue:
 		elif event.key == pygame.K_SPACE:
 			self.chopper.firing_bullets = True
 			self.stats.spacebar_pressed = True
+		elif event.key == pygame.K_c:
+			self.cut_scene.active = True
 		elif event.key == pygame.K_ESCAPE:
 			self.stats.game_active = False
 			self.chopper.motor_sound.fadeout(1000)
@@ -177,8 +189,6 @@ class HeliRescue:
 			if bullet.rect.left > self.settings.screen_width:
 				self.bullets.remove(bullet)
 
-		self._check_bullet_asteroid_collisions()
-
 	def _update_shockwaves(self):
 		"""Update size and border of shockwaves and get rid of old waves."""
 		self.shockwaves.update()
@@ -206,14 +216,20 @@ class HeliRescue:
 			if puff.pos_x < -puff.radius:
 				self.smoke_puffs.remove(puff)
 
-	def _check_bullet_asteroid_collisions(self):
-		"""Respond to bullet-asteroid collisions."""
-		# Remove bullets that have collided with asteroids.
+	def _check_collisions(self):
+		"""Check for collisions between game objects."""
+		
+		# Look for bullet & asteroid collisions.
 		collisions = pygame.sprite.groupcollide(
 			self.asteroids, self.bullets, False, True)
 		# Reduce asteroid health for each bullet hit
 		for asteroid in collisions.keys():
 			asteroid.health -= 1
+
+		#Look for asteroid-chopper collisions.
+		if pygame.sprite.spritecollideany(self.chopper, self.asteroids, 
+										self._collide_hit_rect):
+			self._chopper_hit()
 
 	def _chopper_hit(self):
 		"""Respond to the chopper hitting an asteroid."""
@@ -265,11 +281,6 @@ class HeliRescue:
 				self.sb.prep_score()
 				self.asteroids.remove(asteroid)
 
-		# Look for asteroid-chopper collisions.
-		if pygame.sprite.spritecollideany(self.chopper, self.asteroids, 
-										self._collide_hit_rect):
-			self._chopper_hit()
-	
 	def _generate_shockwave(self, asteroid):
 		"""Create a shockwave on destruction of item."""
 		new_wave = Shockwave(self, asteroid.rect.centerx, 
