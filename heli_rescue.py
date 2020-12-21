@@ -10,7 +10,7 @@ from bullet import Bullet
 from asteroids import Asteroid
 from background_elements import Cloud
 from cut_scene import CutScene
-from particle_effects import Shockwave, ParticleBreak, Smoke
+from particle_effects import Shockwave, ParticleBreak, Smoke, Sparks
 
 class HeliRescue:
 	"""Overall class to run the Heli Rescue game."""
@@ -39,6 +39,7 @@ class HeliRescue:
 		self.clouds = pygame.sprite.Group()
 		self.shockwaves = pygame.sprite.Group()
 		self.particles = pygame.sprite.Group()
+		self.sparks = pygame.sprite.Group()
 		self.smoke_puffs = pygame.sprite.Group()
 
 		# Tutorial Prompts.
@@ -62,6 +63,7 @@ class HeliRescue:
 				self._check_collisions()
 				self._update_shockwaves()
 				self._update_particles()
+				self._update_sparks()
 				self._generate_smoke(self.chopper)
 				self._update_smoke()
 				self._create_clouds()
@@ -207,6 +209,15 @@ class HeliRescue:
 			if particle.radius <=0:
 				self.particles.remove(particle)
 
+	def _update_sparks(self):
+		"""Update size/position of sparks and get rid of old sparks."""
+		self.sparks.update()
+
+		# Get rid of particles that have a radius approaching zero.
+		for spark in self.sparks.copy():
+			if spark.radius <=0:
+				self.sparks.remove(spark)
+
 	def _update_smoke(self):
 		"""Update size/position of puffs and get rid of old puffs."""
 		self.smoke_puffs.update()
@@ -226,11 +237,22 @@ class HeliRescue:
 		for asteroid in collisions.keys():
 			asteroid.health -= 1
 
-		#Look for asteroid-chopper collisions.
+		# Look for asteroid-chopper collisions.
 		if pygame.sprite.spritecollideany(self.chopper, self.asteroids, 
 										self._collide_hit_rect):
 			self._chopper_hit()
 
+		# Look for spark-generating collisions.
+		if pygame.sprite.spritecollideany(self.chopper, self.asteroids, 
+										self._collide_spark_rect):
+			self._generate_sparks(self.chopper)
+
+	def _collide_hit_rect(self, one, two):
+		return one.hitbox.colliderect(two.rect)
+
+	def _collide_spark_rect(self, one, two):
+		return one.sparkbox.colliderect(two.rect)
+	
 	def _chopper_hit(self):
 		"""Respond to the chopper hitting an asteroid."""
 
@@ -304,8 +326,12 @@ class HeliRescue:
 			self.smoke_puffs.add(new_puff)
 			self.chopper.smoke_emitting_state = 0
 
-	def _collide_hit_rect(self, one, two):
-		return one.hitbox.colliderect(two.rect)
+	def _generate_sparks(self, chopper):
+		"""Create group of sparks on contact."""
+		for i in range(self.settings.spark_count):
+			new_spark = Sparks(self, self.chopper.sparkbox.centerx, 
+					self.chopper.sparkbox.top, self.settings.spark_colour)
+			self.sparks.add(new_spark)
 
 	def _create_cloud(self):
 		"""Create a cloud and add it to the list of clouds."""
@@ -337,6 +363,8 @@ class HeliRescue:
 			wave.draw_wave()
 		for particle in self.particles.sprites():
 			particle.draw_particle()
+		for spark in self.sparks.sprites():
+			spark.draw_spark()
 		for puff in self.smoke_puffs.sprites():
 			puff.draw_smoke()
 		self.asteroids.draw(self.screen)

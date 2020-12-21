@@ -50,6 +50,13 @@ class Settings:
 		self.particle_movement_speed = 4
 		self.particle_count = 15
 
+		# Spark Settings
+		self.spark_radius = 5
+		self.spark_decay_speed = 0.1
+		self.spark_colour = (81, 69, 69)
+		self.spark_movement_speed = 5
+		self.spark_count = 15
+
 		# Smoke Settings
 		self.smoke_radius = 10
 		self.smoke_colour = (81, 69, 69)
