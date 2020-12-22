@@ -114,9 +114,12 @@ class Chopper(Sprite):
 	def blitme(self):
 		"""Draw the chopper at its current location."""
 		self.screen.blit(self.rotated_image, self.rect)
-		pygame.draw.rect(self.screen, 'Red', self.rect, 2)
-		pygame.draw.rect(self.screen, 'Green', self.hitbox, 2)
-		pygame.draw.rect(self.screen, 'Blue', self.sparkbox, 2)
+
+		# Draw image border and htiboxes
+		pygame.draw.rect(self.screen, 'red', self.rect, 2)
+		pygame.draw.rect(self.screen, 'green', self.hitbox, 2)
+		pygame.draw.rect(self.screen, 'blue', self.sparkbox, 2)
+
 
 	def center_chopper(self):
 		"""Center the chopper on the screen."""

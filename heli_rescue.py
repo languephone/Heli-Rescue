@@ -368,6 +368,9 @@ class HeliRescue:
 		for puff in self.smoke_puffs.sprites():
 			puff.draw_smoke()
 		self.asteroids.draw(self.screen)
+		# Show asteroid hitboxes
+		for asteroid in self.asteroids:
+			pygame.draw.rect(self.screen, 'magenta', asteroid.rect, 2)
 
 		# Draw prompt information.
 		if self.stats.spacebar_pressed == False:
