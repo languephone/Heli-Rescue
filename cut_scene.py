@@ -29,6 +29,7 @@ class CutScene():
 			self.hr_game._generate_smoke(self.chopper)
 			self.hr_game._update_smoke()
 			self.hr_game._update_clouds()
+			self.hr_game._check_tutorial_prompts()
 
 			self.hr_game._update_screen()
 			self.hr_game.clock.tick(120)
