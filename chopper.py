@@ -22,12 +22,14 @@ class Chopper(Sprite):
 		self.rotated_image = self.scaled_image
 		self.rect = self.rotated_image.get_rect()
 		self.hitbox = pygame.Rect(0, 0, 64, 42)
+		self.sparkbox = pygame.Rect(0, 0, 120, 14)
 		
 		# Start each new chopper below the center of the screen.
 		self.rect.centerx = self.screen_rect.centerx
 		self.rect.y = self.screen_rect.bottom
 		self.hitbox.centerx = self.rect.centerx + 26
 		self.hitbox.centery = self.rect.centery + 6
+		self.sparkbox.midbottom = self.hitbox.midtop
 
 		# Store a decimal x & y value for the chopper's actual position
 		self.centerx, self.centery = float(self.rect.centerx), float(self.rect.centery)
@@ -65,6 +67,7 @@ class Chopper(Sprite):
 		self.rect.centery = int(self.centery)
 		self.hitbox.centerx = self.rect.centerx + 26
 		self.hitbox.centery = self.rect.centery + 6
+		self.sparkbox.midbottom = self.hitbox.midtop
 
 		# Update the bullet firing state
 		if self.firing_bullets:
@@ -106,6 +109,7 @@ class Chopper(Sprite):
 		if self.current_image >= len(self.images):
 			self.current_image = 0
 		self.image = self.images[int(self.current_image)]
+		self.scaled_image = pygame.transform.scale2x(self.image)
 
 	def blitme(self):
 		"""Draw the chopper at its current location."""
@@ -119,9 +123,22 @@ class Chopper(Sprite):
 
 	def center_chopper(self):
 		"""Center the chopper on the screen."""
-		self.centery -= self.settings.chopper_speed / 2
+		if self.centery > self.settings.screen_height / 2:
+			self.centery -= self.settings.chopper_speed / 2
+
+		if self.centery < self.settings.screen_height / 2:
+			self.centery += self.settings.chopper_speed / 2
+		
+		if self.centerx > self.settings.screen_width / 2:
+			self.centerx -= self.settings.chopper_speed / 2
+
+		if self.centerx < self.settings.screen_width / 2:
+			self.centerx += self.settings.chopper_speed / 2
+
 		self.rect.centery = int(self.centery)
+		self.rect.centerx = int(self.centerx)
 		self.hitbox.centerx = self.rect.centerx + 26
 		self.hitbox.centery = self.rect.centery + 6
+		self.sparkbox.midbottom = self.hitbox.midtop
 		self._animate_chopper()
 		self._rotate_chopper()

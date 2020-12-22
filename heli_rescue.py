@@ -9,7 +9,8 @@ from chopper import Chopper
 from bullet import Bullet
 from asteroids import Asteroid
 from background_elements import Cloud
-from particle_effects import Shockwave, ParticleBreak, Smoke
+from cut_scene import CutScene
+from particle_effects import Shockwave, ParticleBreak, Smoke, Sparks
 
 class HeliRescue:
 	"""Overall class to run the Heli Rescue game."""
@@ -20,6 +21,7 @@ class HeliRescue:
 		pygame.init()
 		self.clock = pygame.time.Clock()
 		self.settings = Settings()
+		
 		self.screen = pygame.display.set_mode(
 			(self.settings.screen_width, self.settings.screen_height))
 		self.bg_surface = pygame.transform.scale(
@@ -31,11 +33,13 @@ class HeliRescue:
 		self.stats = GameStats(self)
 		self.sb = Scoreboard(self)
 		self.chopper = Chopper(self)
+		self.cut_scene = CutScene('level clear', self)
 		self.bullets = pygame.sprite.Group()
 		self.asteroids = pygame.sprite.Group()
 		self.clouds = pygame.sprite.Group()
 		self.shockwaves = pygame.sprite.Group()
 		self.particles = pygame.sprite.Group()
+		self.sparks = pygame.sprite.Group()
 		self.smoke_puffs = pygame.sprite.Group()
 
 		# Tutorial Prompts.
@@ -56,13 +60,16 @@ class HeliRescue:
 				self._update_bullets()
 				self._hurl_asteroids()
 				self._update_asteroids()
+				self._check_collisions()
 				self._update_shockwaves()
 				self._update_particles()
+				self._update_sparks()
 				self._generate_smoke(self.chopper)
 				self._update_smoke()
 				self._create_clouds()
 				self._update_clouds()
 				self._check_tutorial_prompts()
+				self._check_cut_scene()
 			
 			self._update_screen()
 			self.clock.tick(120)
@@ -102,6 +109,11 @@ class HeliRescue:
 		if button_clicked and not self.stats.game_active:
 			self._start_game()
 
+	def _check_cut_scene(self):
+		"""Check for conditions to trigger a cut scene."""
+		if self.cut_scene.active == True:
+			self.cut_scene.temp_loop()
+
 	def _check_keydown_events(self, event):
 		"""Respond to keypresses."""
 		if event.key == pygame.K_RIGHT:
@@ -115,6 +127,8 @@ class HeliRescue:
 		elif event.key == pygame.K_SPACE:
 			self.chopper.firing_bullets = True
 			self.stats.spacebar_pressed = True
+		elif event.key == pygame.K_c:
+			self.cut_scene.active = True
 		elif event.key == pygame.K_ESCAPE:
 			self.stats.game_active = False
 			self.chopper.motor_sound.fadeout(1000)
@@ -177,8 +191,6 @@ class HeliRescue:
 			if bullet.rect.left > self.settings.screen_width:
 				self.bullets.remove(bullet)
 
-		self._check_bullet_asteroid_collisions()
-
 	def _update_shockwaves(self):
 		"""Update size and border of shockwaves and get rid of old waves."""
 		self.shockwaves.update()
@@ -197,6 +209,15 @@ class HeliRescue:
 			if particle.radius <=0:
 				self.particles.remove(particle)
 
+	def _update_sparks(self):
+		"""Update size/position of sparks and get rid of old sparks."""
+		self.sparks.update()
+
+		# Get rid of particles that have a radius approaching zero.
+		for spark in self.sparks.copy():
+			if spark.radius <=0:
+				self.sparks.remove(spark)
+
 	def _update_smoke(self):
 		"""Update size/position of puffs and get rid of old puffs."""
 		self.smoke_puffs.update()
@@ -206,15 +227,32 @@ class HeliRescue:
 			if puff.pos_x < -puff.radius:
 				self.smoke_puffs.remove(puff)
 
-	def _check_bullet_asteroid_collisions(self):
-		"""Respond to bullet-asteroid collisions."""
-		# Remove bullets that have collided with asteroids.
+	def _check_collisions(self):
+		"""Check for collisions between game objects."""
+		
+		# Look for bullet & asteroid collisions.
 		collisions = pygame.sprite.groupcollide(
 			self.asteroids, self.bullets, False, True)
 		# Reduce asteroid health for each bullet hit
 		for asteroid in collisions.keys():
 			asteroid.health -= 1
 
+		# Look for asteroid-chopper collisions.
+		if pygame.sprite.spritecollideany(self.chopper, self.asteroids, 
+										self._collide_hit_rect):
+			self._chopper_hit()
+
+		# Look for spark-generating collisions.
+		if pygame.sprite.spritecollideany(self.chopper, self.asteroids, 
+										self._collide_spark_rect):
+			self._generate_sparks(self.chopper)
+
+	def _collide_hit_rect(self, one, two):
+		return one.hitbox.colliderect(two.rect)
+
+	def _collide_spark_rect(self, one, two):
+		return one.sparkbox.colliderect(two.rect)
+	
 	def _chopper_hit(self):
 		"""Respond to the chopper hitting an asteroid."""
 
@@ -265,11 +303,6 @@ class HeliRescue:
 				self.sb.prep_score()
 				self.asteroids.remove(asteroid)
 
-		# Look for asteroid-chopper collisions.
-		if pygame.sprite.spritecollideany(self.chopper, self.asteroids, 
-										self._collide_hit_rect):
-			self._chopper_hit()
-	
 	def _generate_shockwave(self, asteroid):
 		"""Create a shockwave on destruction of item."""
 		new_wave = Shockwave(self, asteroid.rect.centerx, 
@@ -293,8 +326,12 @@ class HeliRescue:
 			self.smoke_puffs.add(new_puff)
 			self.chopper.smoke_emitting_state = 0
 
-	def _collide_hit_rect(self, one, two):
-		return one.hitbox.colliderect(two.rect)
+	def _generate_sparks(self, chopper):
+		"""Create group of sparks on contact."""
+		for i in range(self.settings.spark_count):
+			new_spark = Sparks(self, self.chopper.sparkbox.centerx, 
+					self.chopper.sparkbox.top, self.settings.spark_colour)
+			self.sparks.add(new_spark)
 
 	def _create_cloud(self):
 		"""Create a cloud and add it to the list of clouds."""
@@ -326,6 +363,8 @@ class HeliRescue:
 			wave.draw_wave()
 		for particle in self.particles.sprites():
 			particle.draw_particle()
+		for spark in self.sparks.sprites():
+			spark.draw_spark()
 		for puff in self.smoke_puffs.sprites():
 			puff.draw_smoke()
 		self.asteroids.draw(self.screen)
