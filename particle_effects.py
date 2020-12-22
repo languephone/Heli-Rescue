@@ -89,16 +89,18 @@ class Sparks(Sprite):
 		self.colour = colour
 		self.pos_x = pos_x
 		self.pos_y = pos_y
-		self.direction_x = randint(-self.settings.spark_movement_speed,
+		self.speed_x = randint(-self.settings.spark_movement_speed,
 			self.settings.spark_movement_speed)
-		self.direction_y = randint(-self.settings.spark_movement_speed,
-			self.settings.spark_movement_speed)
+		self.speed_y = randint(-self.settings.spark_movement_speed,
+			0)
+		self.gravity = 0.15
 
 	def update(self):
 		"""Reduce the radius of the circle and move along x/y axis."""
 		self.radius -= self.settings.spark_decay_speed
-		self.pos_x += self.direction_x
-		self.pos_y += self.direction_y
+		self.pos_x += self.speed_x
+		self.pos_y += self.speed_y
+		self.speed_y += self.gravity
 
 	def draw_spark(self):
 		"""draw the spark using its current size/location."""
