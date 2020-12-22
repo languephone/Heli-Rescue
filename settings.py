@@ -55,7 +55,7 @@ class Settings:
 		self.spark_decay_speed = 0.1
 		self.spark_colour = (243, 190, 51)
 		self.spark_movement_speed = 5
-		self.spark_count = 3
+		self.spark_count = 1
 
 		# Smoke Settings
 		self.smoke_radius = 10
