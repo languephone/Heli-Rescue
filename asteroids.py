@@ -44,11 +44,10 @@ class Asteroid(Sprite):
 
 	def move_up(self):
 		"""Move the asteroid up off the screen."""
-		for asteroid in self.asteroids:
-			if asteroid.y > 0 + asteroid.rect.height:
-				asteroid.y -= self.settings.asteroid_speed
-				asteroid.rect.y = int(asteroid.y)
+		if self.y > 0 - self.rect.height:
+			self.y -= self.settings.asteroid_speed
+			self.rect.y = int(self.y)
 
-		for asteroid in self.asteroids.copy():
-			if asteroid.y <= -asteroid.rect.height:
-				self.asteroids.remove(asteroid)
+		# Remove any asteroids that are off-screen
+		if self.y <= -self.rect.height:
+			self.kill()

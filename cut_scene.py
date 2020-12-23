@@ -40,18 +40,16 @@ class CutScene():
 
 		if self.chopper.rect.center == ((self.settings.screen_width / 2, self.settings.screen_height / 2)):
 		
+			# Move clouds up off the screen.
 			if self.hr_game.clouds:
-				"""Move the cloud up off the screen."""
-				for cloud in self.hr_game.clouds:
-					if cloud.y > 0 - cloud.rect.height:
-						cloud.y -= self.settings.asteroid_speed
-						cloud.rect.y = int(cloud.y)
-
 				for cloud in self.hr_game.clouds.copy():
-					if cloud.y <= -cloud.rect.height:
-						self.hr_game.clouds.remove(cloud)
-
-
+					cloud.move_up()
+			# Move asteroids up off the screen.
+			if self.hr_game.asteroids:
+				for asteroid in self.hr_game.asteroids.copy():
+					asteroid.move_up()
+			
+			# End CutScene when all elements have been removed from the screen.
 			else:
 				self.active = False
 

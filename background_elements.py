@@ -33,11 +33,10 @@ class Cloud(Sprite):
 
 	def move_up(self):
 		"""Move the cloud up off the screen."""
-		for cloud in self.clouds:
-			if cloud.y > 0 + cloud.rect.height:
-				cloud.y -= self.settings.asteroid_speed
-				cloud.rect.y = int(cloud.y)
+		if self.y > 0 - self.rect.height:
+			self.y -= self.settings.asteroid_speed
+			self.rect.y = int(self.y)
 
-		for cloud in self.clouds.copy():
-			if cloud.y <= -cloud.rect.height:
-				self.clouds.remove(cloud)
+		# Remove any clouds that are off-screen
+		if self.y <= -self.rect.height:
+			self.kill()
