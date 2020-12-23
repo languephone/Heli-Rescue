@@ -37,6 +37,29 @@ class CutScene():
 	def update(self):
 		"""The actions of the cut scene."""
 		self.chopper.center_chopper()
-		
+
 		if self.chopper.rect.center == ((self.settings.screen_width / 2, self.settings.screen_height / 2)):
-			self.active = False
+		
+			if self.hr_game.clouds:
+				"""Move the cloud up off the screen."""
+				for cloud in self.hr_game.clouds:
+					if cloud.y > 0 - cloud.rect.height:
+						cloud.y -= self.settings.asteroid_speed
+						cloud.rect.y = int(cloud.y)
+
+				for cloud in self.hr_game.clouds.copy():
+					if cloud.y <= -cloud.rect.height:
+						self.hr_game.clouds.remove(cloud)
+
+
+			else:
+				self.active = False
+
+
+	def landing(self):
+		"""Create a scene where the chopper lands."""
+		
+		# Move all sprite groups up off the screen
+		#self.hr_game.bullets.move_up()
+		#self.hr_game.asteroids.move_up()
+		self.hr_game.clouds.move_up()

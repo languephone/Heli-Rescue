@@ -24,6 +24,7 @@ class Asteroid(Sprite):
 		self.rect.y = randint(0, self.settings.screen_height - self.rect.height)
 
 		self.x = float(self.rect.x)
+		self.y = float(self.rect.y)
 
 		# Asteroid attributes
 		self.health = self.settings.asteroid_health
@@ -40,3 +41,14 @@ class Asteroid(Sprite):
 		# Move to left
 		self.x -= self.settings.asteroid_speed
 		self.rect.x = int(self.x)
+
+	def move_up(self):
+		"""Move the asteroid up off the screen."""
+		for asteroid in self.asteroids:
+			if asteroid.y > 0 + asteroid.rect.height:
+				asteroid.y -= self.settings.asteroid_speed
+				asteroid.rect.y = int(asteroid.y)
+
+		for asteroid in self.asteroids.copy():
+			if asteroid.y <= -asteroid.rect.height:
+				self.asteroids.remove(asteroid)
