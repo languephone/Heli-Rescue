@@ -41,11 +41,10 @@ class CutScene():
 		if self.chopper.rect.center == ((self.settings.screen_width / 2, self.settings.screen_height / 2)):
 		
 			# Move clouds up off the screen.
-			if self.hr_game.clouds:
+			if self.hr_game.clouds or self.hr_game.asteroids:
 				for cloud in self.hr_game.clouds.copy():
 					cloud.move_up()
-			# Move asteroids up off the screen.
-			if self.hr_game.asteroids:
+
 				for asteroid in self.hr_game.asteroids.copy():
 					asteroid.move_up()
 			
