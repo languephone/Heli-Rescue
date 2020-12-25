@@ -33,7 +33,7 @@ class HeliRescue:
 		self.stats = GameStats(self)
 		self.sb = Scoreboard(self)
 		self.chopper = Chopper(self)
-		self.cut_scene = CutScene('level clear', self)
+		self.cut_scene = CutScene('level_clear', self)
 		self.bullets = pygame.sprite.Group()
 		self.asteroids = pygame.sprite.Group()
 		self.clouds = pygame.sprite.Group()
@@ -368,6 +368,7 @@ class HeliRescue:
 		for puff in self.smoke_puffs.sprites():
 			puff.draw_smoke()
 		self.asteroids.draw(self.screen)
+
 		# Show asteroid hitboxes
 		for asteroid in self.asteroids:
 			pygame.draw.rect(self.screen, 'magenta', asteroid.rect, 2)

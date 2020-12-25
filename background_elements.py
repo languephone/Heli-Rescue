@@ -8,6 +8,7 @@ class Cloud(Sprite):
 		"""Initialize the cloud and set its starting position."""
 		super().__init__()
 		self.screen = hr_game.screen
+		self.screen_rect = self.screen.get_rect()
 		self.settings = hr_game.settings
 
 		# Load the cloud image and set its rect attribute.
@@ -40,3 +41,27 @@ class Cloud(Sprite):
 		# Remove any clouds that are off-screen
 		if self.y <= -self.rect.height:
 			self.kill()
+
+class Ground(Sprite):
+	"""A class to create and manage a finished floor to land on."""
+	def __init__(self, hr_game):
+		"""Initialize a floor tile and set its position."""
+		
+		super().__init__()
+		self.screen = hr_game.screen
+		self.settings = hr_game.settings
+		
+		# Load the image and set a rect attribute.
+		self.image = pygame.image.load('images/ground_tile.png').convert_alpha()
+		self.rect = self.image.get_rect()
+
+		# Store the tile's exact vertical position.
+		self.y = float(self.rect.y)
+
+
+	def update(self):
+		"""Move the tile up."""
+		self.y += self.settings.ground_speed * self.settings.ground_direction
+		self.rect.y = int(self.y)
+
+
