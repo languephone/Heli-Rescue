@@ -12,6 +12,7 @@ from asteroids import Asteroid
 from background_elements import Cloud
 from cut_scene import CutScene
 from particle_effects import Shockwave, ParticleBreak, Smoke, Sparks
+from aliens import Alien
 
 class HeliRescue:
 	"""Overall class to run the Heli Rescue game."""
@@ -42,6 +43,8 @@ class HeliRescue:
 		self.particles = pygame.sprite.Group()
 		self.sparks = pygame.sprite.Group()
 		self.smoke_puffs = pygame.sprite.Group()
+		self.scene_x = 0 # used for enemy map to determine when enemies appear
+		self._generate_alien_lists()
 
 		# Tutorial Prompts.
 		self.press_spacebar = Prompt(self, "Hold spacebar to fire bullets")
@@ -61,6 +64,8 @@ class HeliRescue:
 				self._update_bullets()
 				self._hurl_asteroids()
 				self._update_asteroids()
+				self._generate_aliens()
+				self._update_aliens()
 				self._check_collisions()
 				self._update_shockwaves()
 				self._update_particles()
@@ -71,6 +76,7 @@ class HeliRescue:
 				self._update_clouds()
 				self._check_tutorial_prompts()
 				self._check_cut_scene()
+				self.scene_x += 1
 			
 			self._update_screen()
 			self.clock.tick(120)
@@ -89,6 +95,24 @@ class HeliRescue:
 	def pause_menu(self):
 		"""A loop to stop chopper, asteroids and bullets from updating."""
 		self.chopper.motor_sound.set_volume(0.2)
+
+	def _generate_alien_lists(self):
+		filename = 'enemy_map.csv'
+		with open(filename, encoding='utf-8-sig') as f:
+			reader = csv.reader(f)
+			header_row = next(reader)
+
+			# Get list of values from the file.
+			self.aliens = []
+			for row in reader:
+				alien = {}
+				for i in range(len(header_row)):
+					alien[header_row[i]] = row[i]
+				self.aliens.append(alien)
+
+			self.alien_start_values = []
+			for alien in self.aliens:
+				self.alien_start_values.append(int(alien['Start']))
 		
 	def _check_events(self):
 		"""Respond to keypresses and mouse events."""
@@ -281,9 +305,22 @@ class HeliRescue:
 		self.asteroids.add(asteroid)
 
 	def _hurl_asteroids(self):
-		"""Add an asteroid if there are fewer than 4 on screen"""
+		"""Add an asteroid if there are fewer than 4 on screen."""
 		if len(self.asteroids) < self.settings.asteroid_max_count:
 			self._create_asteroid()
+
+	def _generate_aliens(self):
+	"""Add an alien if screen x value has reached """
+		if self.alien_start_values[0] <= self.scene_x:
+			for i in range(len(self.alien_start_values.copy())):
+				if self.alien_start_values[i] <= self.scene_x:
+					alien = Alien(
+						self.settings.screen_width,
+						self.aliens[i]
+					)
+					self.alien_start_values.remove(self.alien_start_values[i])
+					break
+
 
 	def _update_asteroids(self):
 		"""Move asteroids to the left"""
