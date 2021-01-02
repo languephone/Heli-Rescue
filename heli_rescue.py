@@ -38,6 +38,7 @@ class HeliRescue:
 		self.cut_scene = CutScene('level clear', self)
 		self.bullets = pygame.sprite.Group()
 		self.asteroids = pygame.sprite.Group()
+		self.aliens = pygame.sprite.Group()
 		self.clouds = pygame.sprite.Group()
 		self.shockwaves = pygame.sprite.Group()
 		self.particles = pygame.sprite.Group()
@@ -65,7 +66,7 @@ class HeliRescue:
 				self._hurl_asteroids()
 				self._update_asteroids()
 				self._generate_aliens()
-				self._update_aliens()
+				#self._update_aliens()
 				self._check_collisions()
 				self._update_shockwaves()
 				self._update_particles()
@@ -103,15 +104,15 @@ class HeliRescue:
 			header_row = next(reader)
 
 			# Get list of values from the file.
-			self.aliens = []
+			self.aliens_to_render = []
 			for row in reader:
 				alien = {}
 				for i in range(len(header_row)):
 					alien[header_row[i]] = row[i]
-				self.aliens.append(alien)
+				self.aliens_to_render.append(alien)
 
 			self.alien_start_values = []
-			for alien in self.aliens:
+			for alien in self.aliens_to_render:
 				self.alien_start_values.append(int(alien['Start']))
 		
 	def _check_events(self):
@@ -310,17 +311,24 @@ class HeliRescue:
 			self._create_asteroid()
 
 	def _generate_aliens(self):
-	"""Add an alien if screen x value has reached """
-		if self.alien_start_values[0] <= self.scene_x:
-			for i in range(len(self.alien_start_values.copy())):
-				if self.alien_start_values[i] <= self.scene_x:
+		"""Add an alien if screen x value has reached """
+		# First check if the initial value in the list is less than x, then if
+		# it is, check all the other ones.  Prevents looping through the entire
+		# list on every loop.
+		if self.alien_start_values and self.alien_start_values[0] <= self.scene_x:
+			for start_value in self.alien_start_values.copy():
+				if start_value <= self.scene_x:
 					alien = Alien(
 						self.settings.screen_width,
-						self.aliens[i]
+						int(self.aliens_to_render[0]['Y']),
+						self.aliens_to_render[0]['Direction'],
+						self
 					)
-					self.alien_start_values.remove(self.alien_start_values[i])
+					self.asteroids.add(alien)
+					self.alien_start_values.remove(start_value)
+					del self.aliens_to_render[0]
+				elif start_value > self.scene_x:
 					break
-
 
 	def _update_asteroids(self):
 		"""Move asteroids to the left"""
@@ -340,6 +348,23 @@ class HeliRescue:
 				self.stats.score += self.settings.asteroid_points
 				self.sb.prep_score()
 				self.asteroids.remove(asteroid)
+
+	# def _update_aliens(self):
+	# 	"""Move aliens in correct direction."""
+	# 	self.aliens.update()
+
+	# 	# Get rid of aliens that have moved beyond the screen.
+	# 	for aliens in self.aliens.copy():
+	# 		if alien.rect.right <= 0:
+	# 			self.aliens.remove(alien)
+
+	# 	# Get rid of aliens with 0 health:
+	# 	for alien in self.aliens.copy():
+	# 		if alien.health <= 0:
+	# 			asteroid.explosion_sound.play()
+	# 			self.stats.score += self.settings.alien_points
+	# 			self.sb.prep_score()
+	# 			self.aliens.remove(alien)
 
 	def _generate_shockwave(self, asteroid):
 		"""Create a shockwave on destruction of item."""

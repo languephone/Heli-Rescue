@@ -27,6 +27,7 @@ class Asteroid(Sprite):
 
 		# Asteroid attributes
 		self.health = self.settings.asteroid_health
+		self.speed = self.settings.asteroid_speed
 
 		# Sound effects
 		self.explosion_sound = pygame.mixer.Sound('sounds/explosion2.ogg')
@@ -38,5 +39,5 @@ class Asteroid(Sprite):
 		# self.rotated_image = pygame.transform.rotozoom(self.image, self.rotation, 1)
 		
 		# Move to left
-		self.x -= self.settings.asteroid_speed
+		self.x -= self.speed
 		self.rect.x = int(self.x)
