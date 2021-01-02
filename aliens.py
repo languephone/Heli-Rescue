@@ -25,7 +25,7 @@ class Alien(Sprite):
 		"""Move the alien to the left."""
 		self.x -= ai_game.settings.alien_speed
 		self.image_rect.x = int(self.x)
-	
+
 
 
 filename = 'enemy_map.csv'
@@ -59,12 +59,13 @@ x = 0
 
 while x <= max_x:
 	if start_values[0] <= x:
-		for i in range(len(start_values.copy())):
-			if start_values[i] <= x:
-				alien_test_list.append(aliens.pop(i))
-				start_values.remove(start_values[i])
-				break
-
+		for start_value in start_values.copy():
+			iterator = 0
+			if start_value <= x:
+				print(f"{x}:creating alien {aliens[iterator]}")
+				alien_test_list.append(aliens.pop(iterator))
+				start_values.remove(start_value)
+			iterator += 1
 	x += 1
 
 # End timer--------------
@@ -72,4 +73,5 @@ t1 = time.time()
 
 total_time = t1 - t0
 print(total_time)
-#print(alien_test_list)
+print(len(aliens))
+print(len(start_values))
