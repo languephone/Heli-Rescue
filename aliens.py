@@ -11,6 +11,6 @@ with open(filename, encoding='utf-8-sig') as f:
 		alien = {}
 		for i in range(len(header_row)):
 			alien[header_row[i]] = row[i]
-			aliens.append(alien)
+		aliens.append(alien)
 
 	print(aliens)
