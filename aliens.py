@@ -12,6 +12,7 @@ class Alien(Sprite):
 
 		# Set image and create rect from image
 		self.image = pygame.image.load('images/spaceship3.png').convert_alpha()
+		self.image = pygame.transform.scale2x(self.image)
 		self.rect = self.image.get_rect()
 
 		# Set position and direction
