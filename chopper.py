@@ -21,12 +21,13 @@ class Chopper(Sprite):
 		self.scaled_image = pygame.transform.scale2x(self.image)
 		self.rotated_image = self.scaled_image
 		self.rect = self.rotated_image.get_rect()
+		
+		# Create separate (smaller) rects for the hitbox and sparkbox
 		self.hitbox = pygame.Rect(0, 0, 64, 42)
 		self.sparkbox = pygame.Rect(0, 0, 120, 14)
 		
 		# Start each new chopper below the center of the screen.
-		self.rect.centerx = self.screen_rect.centerx
-		self.rect.y = self.screen_rect.bottom
+		self.rect.midtop = self.screen_rect.midbottom
 		self.hitbox.centerx = self.rect.centerx + 26
 		self.hitbox.centery = self.rect.centery + 6
 		self.sparkbox.midbottom = self.hitbox.midtop
@@ -48,7 +49,7 @@ class Chopper(Sprite):
 		self.firing_bullets = False
 		self.bullet_firing_state = 0
 
-    # Smoke Status Flags
+    	# Smoke Status Flags
 		self.emitting_smoke = False
 		self.smoke_emitting_state = 0
 
