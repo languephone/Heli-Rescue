@@ -1,6 +1,7 @@
 import sys
 from time import sleep
 import pygame
+import csv
 from settings import Settings
 from game_stats import GameStats
 from scoreboard import Scoreboard
@@ -11,6 +12,7 @@ from asteroids import Asteroid
 from background_elements import Cloud
 from cut_scene import CutScene
 from particle_effects import Shockwave, ParticleBreak, Smoke, Sparks
+from aliens import Alien
 
 class HeliRescue:
 	"""Overall class to run the Heli Rescue game."""
@@ -36,11 +38,14 @@ class HeliRescue:
 		self.cut_scene = CutScene('level clear', self)
 		self.bullets = pygame.sprite.Group()
 		self.asteroids = pygame.sprite.Group()
+		self.aliens = pygame.sprite.Group()
 		self.clouds = pygame.sprite.Group()
 		self.shockwaves = pygame.sprite.Group()
 		self.particles = pygame.sprite.Group()
 		self.sparks = pygame.sprite.Group()
 		self.smoke_puffs = pygame.sprite.Group()
+		self.scene_x = 0 # used for enemy map to determine when enemies appear
+		self._generate_alien_lists()
 
 		# Tutorial Prompts.
 		self.press_spacebar = Prompt(self, "Hold spacebar to fire bullets")
@@ -60,6 +65,8 @@ class HeliRescue:
 				self._update_bullets()
 				self._hurl_asteroids()
 				self._update_asteroids()
+				self._generate_aliens()
+				#self._update_aliens()
 				self._check_collisions()
 				self._update_shockwaves()
 				self._update_particles()
@@ -70,6 +77,7 @@ class HeliRescue:
 				self._update_clouds()
 				self._check_tutorial_prompts()
 				self._check_cut_scene()
+				self.scene_x += 1
 			
 			self._update_screen()
 			self.clock.tick(120)
@@ -88,6 +96,24 @@ class HeliRescue:
 	def pause_menu(self):
 		"""A loop to stop chopper, asteroids and bullets from updating."""
 		self.chopper.motor_sound.set_volume(0.2)
+
+	def _generate_alien_lists(self):
+		filename = 'enemy_map.csv'
+		with open(filename, encoding='utf-8-sig') as f:
+			reader = csv.reader(f)
+			header_row = next(reader)
+
+			# Get list of values from the file.
+			self.aliens_to_render = []
+			for row in reader:
+				alien = {}
+				for i in range(len(header_row)):
+					alien[header_row[i]] = row[i]
+				self.aliens_to_render.append(alien)
+
+			self.alien_start_values = []
+			for alien in self.aliens_to_render:
+				self.alien_start_values.append(int(alien['Start']))
 		
 	def _check_events(self):
 		"""Respond to keypresses and mouse events."""
@@ -280,9 +306,29 @@ class HeliRescue:
 		self.asteroids.add(asteroid)
 
 	def _hurl_asteroids(self):
-		"""Add an asteroid if there are fewer than 4 on screen"""
+		"""Add an asteroid if there are fewer than 4 on screen."""
 		if len(self.asteroids) < self.settings.asteroid_max_count:
 			self._create_asteroid()
+
+	def _generate_aliens(self):
+		"""Add an alien if screen x value has reached """
+		# First check if the initial value in the list is less than x, then if
+		# it is, check all the other ones.  Prevents looping through the entire
+		# list on every loop.
+		if self.alien_start_values and self.alien_start_values[0] <= self.scene_x:
+			for start_value in self.alien_start_values.copy():
+				if start_value <= self.scene_x:
+					alien = Alien(
+						self.settings.screen_width,
+						int(self.aliens_to_render[0]['Y']),
+						self.aliens_to_render[0]['Direction'],
+						self
+					)
+					self.asteroids.add(alien)
+					self.alien_start_values.remove(start_value)
+					del self.aliens_to_render[0]
+				elif start_value > self.scene_x:
+					break
 
 	def _update_asteroids(self):
 		"""Move asteroids to the left"""
@@ -302,6 +348,23 @@ class HeliRescue:
 				self.stats.score += self.settings.asteroid_points
 				self.sb.prep_score()
 				self.asteroids.remove(asteroid)
+
+	# def _update_aliens(self):
+	# 	"""Move aliens in correct direction."""
+	# 	self.aliens.update()
+
+	# 	# Get rid of aliens that have moved beyond the screen.
+	# 	for aliens in self.aliens.copy():
+	# 		if alien.rect.right <= 0:
+	# 			self.aliens.remove(alien)
+
+	# 	# Get rid of aliens with 0 health:
+	# 	for alien in self.aliens.copy():
+	# 		if alien.health <= 0:
+	# 			asteroid.explosion_sound.play()
+	# 			self.stats.score += self.settings.alien_points
+	# 			self.sb.prep_score()
+	# 			self.aliens.remove(alien)
 
 	def _generate_shockwave(self, asteroid):
 		"""Create a shockwave on destruction of item."""

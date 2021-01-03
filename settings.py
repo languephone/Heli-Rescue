@@ -29,6 +29,10 @@ class Settings:
 		self.asteroid_health = 5
 		self.asteroid_max_count = 4
 
+		# Alien Settings
+		self.alien_speed = 3
+		self.alien_health = 10
+
 		# Cloud Settings
 		self.cloud_offset = 1500
 		self.cloud_speed = 1
