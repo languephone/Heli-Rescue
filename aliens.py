@@ -15,6 +15,9 @@ class Alien(Sprite):
 		self.image = pygame.transform.scale2x(self.image)
 		self.rect = self.image.get_rect()
 
+		# Create separate (smaller) rect for the hitbox
+		self.hitbox = self.rect.inflate(-10, -18)
+
 		# Set position and direction
 		self.x = x_position
 		self.y = int(y_position)
@@ -32,3 +35,4 @@ class Alien(Sprite):
 		"""Move the alien to the left."""
 		self.x -= self.speed
 		self.rect.x = int(self.x)
+		self.hitbox.center = self.rect.center
