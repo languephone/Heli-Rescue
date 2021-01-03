@@ -21,15 +21,16 @@ class Chopper(Sprite):
 		self.scaled_image = pygame.transform.scale2x(self.image)
 		self.rotated_image = self.scaled_image
 		self.rect = self.rotated_image.get_rect()
-		self.hitbox = pygame.Rect(0, 0, 64, 42)
+		
+		# Create separate (smaller) rects for the hitbox and sparkbox
+		self.hitbox_offset_x = 24
+		self.hitbox_offset_y = 6
+		self.hitbox = self.rect.inflate(-146, -32)
 		self.sparkbox = pygame.Rect(0, 0, 120, 14)
 		
 		# Start each new chopper below the center of the screen.
-		self.rect.centerx = self.screen_rect.centerx
-		self.rect.y = self.screen_rect.bottom
-		self.hitbox.centerx = self.rect.centerx + 26
-		self.hitbox.centery = self.rect.centery + 6
-		self.sparkbox.midbottom = self.hitbox.midtop
+		self.rect.midtop = self.screen_rect.midbottom
+		self._update_hitboxes()
 
 		# Store a decimal x & y value for the chopper's actual position
 		self.centerx, self.centery = float(self.rect.centerx), float(self.rect.centery)
@@ -48,7 +49,7 @@ class Chopper(Sprite):
 		self.firing_bullets = False
 		self.bullet_firing_state = 0
 
-    # Smoke Status Flags
+    	# Smoke Status Flags
 		self.emitting_smoke = False
 		self.smoke_emitting_state = 0
 
@@ -65,9 +66,7 @@ class Chopper(Sprite):
 		self.rect = self.rotated_image.get_rect()
 		self.rect.centerx = int(self.centerx)
 		self.rect.centery = int(self.centery)
-		self.hitbox.centerx = self.rect.centerx + 26
-		self.hitbox.centery = self.rect.centery + 6
-		self.sparkbox.midbottom = self.hitbox.midtop
+		self._update_hitboxes()
 
 		# Update the bullet firing state
 		if self.firing_bullets:
@@ -111,6 +110,13 @@ class Chopper(Sprite):
 		self.image = self.images[int(self.current_image)]
 		self.scaled_image = pygame.transform.scale2x(self.image)
 
+	def _update_hitboxes(self):
+		"""Update position of hitboxes based on position of self.rect."""
+		self.hitbox.centerx = self.rect.centerx + self.hitbox_offset_x
+		self.hitbox.centery = self.rect.centery + self.hitbox_offset_y
+		self.sparkbox.midbottom = self.hitbox.midtop
+		self.sparkbox.y = self.hitbox.y - 20
+
 	def blitme(self):
 		"""Draw the chopper at its current location."""
 		self.screen.blit(self.rotated_image, self.rect)
@@ -137,8 +143,7 @@ class Chopper(Sprite):
 
 		self.rect.centery = int(self.centery)
 		self.rect.centerx = int(self.centerx)
-		self.hitbox.centerx = self.rect.centerx + 26
-		self.hitbox.centery = self.rect.centery + 6
-		self.sparkbox.midbottom = self.hitbox.midtop
+
 		self._animate_chopper()
 		self._rotate_chopper()
+		self._update_hitboxes()

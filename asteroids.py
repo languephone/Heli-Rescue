@@ -1,6 +1,6 @@
 import pygame
 from pygame.sprite import Sprite
-from random import randint
+from random import choice, randint
 
 class Asteroid(Sprite):
 	"""A class to represent a single asteroid in a field of asteroids."""
@@ -13,17 +13,20 @@ class Asteroid(Sprite):
 		# Load the asteroid image and set its rect attribute.
 		self.image_bank = ['images/asteroid_4.png', 'images/asteroid_2.png',
 						'images/asteroid_3.png']
-		self.random_index = randint(0, 2)
 		self.image = pygame.transform.scale(pygame.image.load(
-				self.image_bank[self.random_index]), (90, 80)).convert_alpha()
+				choice(self.image_bank)), (90, 80)).convert_alpha()
 		self.rect = self.image.get_rect()
 
 		# Start each new asteroid in a random vertical space on the right of the screen
-		self.rect.x = randint(self.settings.screen_width, self.settings.screen_width
-						 + self.settings.asteroid_offset)
+		self.rect.x = randint(self.settings.screen_width,
+					self.settings.screen_width + self.settings.asteroid_offset)
 		self.rect.y = randint(0, self.settings.screen_height - self.rect.height)
 
+		# maintain exact position of asteroid
 		self.x = float(self.rect.x)
+
+		# Create separate (smaller) rect for the hitbox
+		self.hitbox = self.rect.inflate(-24, -24)
 
 		# Asteroid attributes
 		self.health = self.settings.asteroid_health
@@ -41,3 +44,4 @@ class Asteroid(Sprite):
 		# Move to left
 		self.x -= self.speed
 		self.rect.x = int(self.x)
+		self.hitbox.center = self.rect.center
