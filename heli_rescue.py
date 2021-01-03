@@ -274,7 +274,7 @@ class HeliRescue:
 			self._generate_sparks(self.chopper)
 
 	def _collide_hit_rect(self, one, two):
-		return one.hitbox.colliderect(two.rect)
+		return one.hitbox.colliderect(two.hitbox)
 
 	def _collide_spark_rect(self, one, two):
 		return one.sparkbox.colliderect(two.rect)
@@ -431,9 +431,10 @@ class HeliRescue:
 		for puff in self.smoke_puffs.sprites():
 			puff.draw_smoke()
 		self.asteroids.draw(self.screen)
+		
 		# Show asteroid hitboxes
 		for asteroid in self.asteroids:
-			pygame.draw.rect(self.screen, 'magenta', asteroid.rect, 2)
+			pygame.draw.rect(self.screen, 'magenta', asteroid.hitbox, 2)
 
 		# Draw prompt information.
 		if self.stats.spacebar_pressed == False:
