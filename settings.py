@@ -48,11 +48,11 @@ class Settings:
 		self.shockwave_border_decay_speed = 0.1
 		
 		# ParticleBreak Settings
-		self.particle_radius = 12
-		self.particle_decay_speed = 0.15
+		self.particle_radius = 7
+		self.particle_decay_speed = 0.10
 		self.particle_colour = (81, 69, 69)
 		self.particle_movement_speed = 4
-		self.particle_count = 15
+		self.particle_count = 30
 
 		# Spark Settings
 		self.spark_radius = 5
