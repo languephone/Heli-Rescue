@@ -311,7 +311,7 @@ class HeliRescue:
 			self._create_asteroid()
 
 	def _generate_aliens(self):
-		"""Add an alien if screen x value has reached """
+		"""Add an alien if screen x value has been reached """
 		# First check if the initial value in the list is less than x, then if
 		# it is, check all the other ones.  Prevents looping through the entire
 		# list on every loop.
