@@ -79,9 +79,10 @@ class MainMenu(Menu):
 		self.move_cursor()
 		if self.hr_game.return_pressed:
 			if self.state == "Start":
-				self.hr_game.stats.game_active = True
+				self.hr_game._start_game()
+				self.run_display = False
 			elif self.state == "Options":
 				pass
 			elif self.state == "Credits":
 				pass
-			self.run_display = False
+			

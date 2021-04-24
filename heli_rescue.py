@@ -181,6 +181,8 @@ class HeliRescue:
 			self.chopper.moving_down = False
 		elif event.key == pygame.K_SPACE:
 			self.chopper.firing_bullets = False
+		elif event.key == pygame.K_RETURN:
+			self.return_pressed = False
 
 	def _check_tutorial_prompts(self):
 		if self.stats.spacebar_pressed == False:
