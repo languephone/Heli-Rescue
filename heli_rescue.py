@@ -319,7 +319,7 @@ class HeliRescue:
 			for start_value in self.alien_start_values.copy():
 				if start_value <= self.scene_x:
 					alien = Alien(
-						self.settings.screen_width,
+						self.settings.screen_width, # Start at the far right
 						int(self.aliens_to_render[0]['Y']),
 						self.aliens_to_render[0]['Direction'],
 						self
@@ -327,7 +327,7 @@ class HeliRescue:
 					self.asteroids.add(alien)
 					self.alien_start_values.remove(start_value)
 					del self.aliens_to_render[0]
-				elif start_value > self.scene_x:
+				else:
 					break
 
 	def _update_asteroids(self):
