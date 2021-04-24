@@ -121,7 +121,7 @@ class Chopper(Sprite):
 		"""Draw the chopper at its current location."""
 		self.screen.blit(self.rotated_image, self.rect)
 
-		# Draw image border and htiboxes
+		# Draw image border and hitboxes
 		pygame.draw.rect(self.screen, 'red', self.rect, 2)
 		pygame.draw.rect(self.screen, 'green', self.hitbox, 2)
 		pygame.draw.rect(self.screen, 'blue', self.sparkbox, 2)
