@@ -71,3 +71,7 @@ class Settings:
 
 		# Scoring
 		self.asteroid_points = 10
+
+		# Menu Settings
+		self.font_size = 48
+		self.font_family = 'Impact'

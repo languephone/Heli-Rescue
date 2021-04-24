@@ -9,14 +9,15 @@ class Menu():
 		self.mid_h = self.hr_game.settings.screen_height // 2
 		self.run_display = True
 		self.cursor_rect = pygame.Rect(0, 0, 20, 20)
-		self.offset = -100
+		self.offset = -120
 		self.text_color = (255, 255, 255)
-		self.font = pygame.font.SysFont('Impact', 48, False)
+		self.font = pygame.font.SysFont(hr_game.settings.font_family, 
+			hr_game.settings.font_size, False)
 
 
 	def draw_text(self, msg, x, y):
 		"""Turn msg into a rendered image and center text on the button."""
-		msg_image = self.font.render(msg, True, self.text_color, (255, 0, 0))
+		msg_image = self.font.render(msg, True, self.text_color, self.hr_game.settings.bg_color)
 		msg_image_rect = msg_image.get_rect()
 		msg_image_rect.center = (x, y)
 		self.hr_game.screen.blit(msg_image, msg_image_rect)
@@ -31,9 +32,9 @@ class MainMenu(Menu):
 	def __init__(self, hr_game):
 		super().__init__(hr_game)
 		self.state = "Start"
-		self.startx, self.starty = self.mid_w, self.mid_h + 30
-		self.optionsx, self.optionsy = self.mid_w, self.mid_h + 50
-		self.creditsx, self.creditsy = self.mid_w, self.mid_h + 70
+		self.startx, self.starty = self.mid_w, self.mid_h + 130
+		self.optionsx, self.optionsy = self.mid_w, self.mid_h + 200
+		self.creditsx, self.creditsy = self.mid_w, self.mid_h + 270
 		self.cursor_rect.midtop  = (self.startx + self.offset, self.starty)
 
 
@@ -43,7 +44,7 @@ class MainMenu(Menu):
 			self.hr_game._check_events()
 			self.check_input()
 			self.hr_game.screen.fill(self.hr_game.settings.bg_color)
-			self.draw_text("Main Menu", self.mid_w, self.mid_h)
+			self.draw_text("Heli Rescue", self.mid_w, self.mid_h)
 			self.draw_text("Start Game", self.startx, self.starty)
 			self.draw_text("Options", self.optionsx, self.optionsy)
 			self.draw_text("Credits", self.creditsx, self.creditsy)
