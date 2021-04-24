@@ -13,6 +13,7 @@ from background_elements import Cloud
 from cut_scene import CutScene
 from particle_effects import Shockwave, ParticleBreak, Smoke, Sparks
 from aliens import Alien
+from menu import MainMenu
 
 class HeliRescue:
 	"""Overall class to run the Heli Rescue game."""
@@ -46,6 +47,8 @@ class HeliRescue:
 		self.smoke_puffs = pygame.sprite.Group()
 		self.scene_x = 0 # used for enemy map to determine when enemies appear
 		self._generate_alien_lists()
+		self.current_menu = MainMenu(self)
+		self.return_pressed = False
 
 		# Tutorial Prompts.
 		self.press_spacebar = Prompt(self, "Hold spacebar to fire bullets")
@@ -159,6 +162,8 @@ class HeliRescue:
 			self.stats.game_active = False
 			self.chopper.motor_sound.fadeout(1000)
 			pygame.mouse.set_visible(True)
+		elif event.key == pygame.K_RETURN:
+			self.return_pressed = True
 		elif event.key == pygame.K_q:
 			pygame.quit()
 			sys.exit()
@@ -453,5 +458,6 @@ class HeliRescue:
 if __name__ == '__main__':
 	# Make a game instance, and run the game.
 	hr = HeliRescue()
+	hr.current_menu.display_menu()
 	hr.intro_game()
 	hr.run_game()
