@@ -6,10 +6,10 @@ class Menu():
 	def __init__(self, hr_game):
 		self.hr_game = hr_game
 		self.mid_w = self.hr_game.settings.screen_width //  2
-		self.mid_h = self.hr_game.settings.screen_height // 2
+		self.mid_h = self.hr_game.settings.screen_height // 3
 		self.run_display = True
 		self.cursor_rect = pygame.Rect(0, 0, 20, 20)
-		self.offset = -120
+		self.cursor_offset = -120
 		self.text_color = (255, 255, 255)
 		self.font = pygame.font.SysFont(hr_game.settings.font_family, 
 			hr_game.settings.font_size, False)
@@ -32,10 +32,10 @@ class MainMenu(Menu):
 	def __init__(self, hr_game):
 		super().__init__(hr_game)
 		self.state = "Start"
-		self.startx, self.starty = self.mid_w, self.mid_h + 130
-		self.optionsx, self.optionsy = self.mid_w, self.mid_h + 200
-		self.creditsx, self.creditsy = self.mid_w, self.mid_h + 270
-		self.cursor_rect.midtop  = (self.startx + self.offset, self.starty)
+		self.startx, self.starty = self.mid_w, self.mid_h + 180
+		self.optionsx, self.optionsy = self.mid_w, self.mid_h + 250
+		self.creditsx, self.creditsy = self.mid_w, self.mid_h + 320
+		self.cursor_rect.midtop  = (self.startx + self.cursor_offset, self.starty)
 
 
 	def display_menu(self):
@@ -54,24 +54,24 @@ class MainMenu(Menu):
 	def move_cursor(self):
 		if self.hr_game.chopper.moving_down:
 			if self.state == "Start":
-				self.cursor_rect.midtop = (self.optionsx + self.offset, self.optionsy)
+				self.cursor_rect.midtop = (self.optionsx + self.cursor_offset, self.optionsy)
 				self.state = "Options"
 			elif self.state == "Options":
-				self.cursor_rect.midtop = (self.creditsx + self.offset, self.creditsy)
+				self.cursor_rect.midtop = (self.creditsx + self.cursor_offset, self.creditsy)
 				self.state = "Credits"
 			else:
-				self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
+				self.cursor_rect.midtop = (self.startx + self.cursor_offset, self.starty)
 				self.state = "Start"
 			self.hr_game.chopper.moving_down = False
 		elif self.hr_game.chopper.moving_up:
 			if self.state == "Start":
-				self.cursor_rect.midtop = (self.creditsx + self.offset, self.creditsy)
+				self.cursor_rect.midtop = (self.creditsx + self.cursor_offset, self.creditsy)
 				self.state = "Credits"
 			elif self.state == "Options":
-				self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
+				self.cursor_rect.midtop = (self.startx + self.cursor_offset, self.starty)
 				self.state = "Start"
 			else:
-				self.cursor_rect.midtop = (self.optionsx + self.offset, self.optionsy)
+				self.cursor_rect.midtop = (self.optionsx + self.cursor_offset, self.optionsy)
 				self.state = "Options"
 			self.hr_game.chopper.moving_up = False
 
