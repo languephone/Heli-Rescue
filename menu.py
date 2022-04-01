@@ -5,7 +5,7 @@ class Menu():
 
 	def __init__(self, hr_game):
 		self.hr_game = hr_game
-		self.mid_w = self.hr_game.settings.screen_width //  2
+		self.mid_w = self.hr_game.settings.screen_width // 2
 		self.mid_h = self.hr_game.settings.screen_height // 3
 		self.run_display = True
 		self.cursor_rect = pygame.Rect(0, 0, 20, 20)
