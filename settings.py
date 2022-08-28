@@ -9,7 +9,7 @@ class Settings:
 		self.bg_color = (135, 206, 235)
 		self.bg_image = 'images/sunset_gradient.png'
 
-		self.framerate = 120
+		self.framerate = 60
 
 		# Cloud Settings
 		self.cloud_offset = 10

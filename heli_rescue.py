@@ -79,6 +79,8 @@ class HeliRescue:
 		self.screen.blit(self.bg_surface, (0,0))
 		self.clouds.draw(self.screen)
 		self.fps.display_fps()
+		for cloud in self.clouds:
+			cloud.show_speed()
 
 		# Make the most recently drawn screen visible.
 		pygame.display.flip()
