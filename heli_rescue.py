@@ -3,6 +3,7 @@ from time import sleep
 import pygame
 from settings import Settings
 from background_elements import Cloud
+from debug import FramesPerSecond
 
 class HeliRescue:
 	"""Overall class to run the Heli Rescue game."""
@@ -24,6 +25,7 @@ class HeliRescue:
 		
 		# Create game objects
 		self.clouds = pygame.sprite.Group()
+		self.fps = FramesPerSecond(self)
 
 	def run_game(self):
 		"""Start the main loop for the game."""
@@ -48,6 +50,10 @@ class HeliRescue:
 		if event.key == pygame.K_q:
 			pygame.quit()
 			sys.exit()
+		elif event.key == pygame.K_UP:
+			self.settings.framerate += 10
+		elif event.key == pygame.K_DOWN:
+			self.settings.framerate -= 10
 
 	def _create_cloud(self):
 		"""Create a cloud and add it to the list of clouds."""
@@ -72,6 +78,7 @@ class HeliRescue:
 		"""Update images on the screen, and flip to the new screen."""
 		self.screen.blit(self.bg_surface, (0,0))
 		self.clouds.draw(self.screen)
+		self.fps.display_fps()
 
 		# Make the most recently drawn screen visible.
 		pygame.display.flip()
