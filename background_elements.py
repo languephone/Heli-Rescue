@@ -20,7 +20,7 @@ class Cloud(Sprite):
 						 + self.settings.cloud_offset)
 		self.rect.y = randint(0, self.settings.cloud_maximum_y)
 
-		self.x = float(self.rect.x)
+		self.x = self.rect.x
 
 		# Assign a speed between min and max
 		self.speed = randint(1, self.settings.cloud_max_speed)

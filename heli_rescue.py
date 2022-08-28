@@ -83,7 +83,7 @@ class HeliRescue:
 				self.scene_x += 1
 			
 			self._update_screen()
-			self.clock.tick(120)
+			self.clock.tick(60)
 
 	def intro_game(self):
 		"""A temporary loop to create an intro scene."""
@@ -94,7 +94,7 @@ class HeliRescue:
 				self.chopper.center_chopper()
 				self._check_tutorial_prompts()
 			self._update_screen()
-			self.clock.tick(120)
+			self.clock.tick(60)
 
 	def pause_menu(self):
 		"""A loop to stop chopper, asteroids and bullets from updating."""
